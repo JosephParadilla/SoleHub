@@ -1,0 +1,209 @@
+﻿@using Microsoft.AspNetCore.Http
+
+@{
+    bool hideTopBar = false;
+
+    if (ViewData["HideTopBar"] is bool value)
+    {
+        hideTopBar = value;
+    }
+
+    string username = Context.Session.GetString("Username") ?? "";
+    string role = Context.Session.GetString("Role") ?? "";
+    string fullName = Context.Session.GetString("FullName") ?? "";
+    bool isLoggedIn = !string.IsNullOrEmpty(username);
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - SoleHub</title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+</head>
+
+<body>
+    
+
+    <header class="main-header">
+        <nav class="navbar navbar-expand-lg navbar-light bg-white">
+            <div class="container-fluid px-4">
+
+                @if (isLoggedIn)
+                {
+                    <a class="navbar-brand brand-logo"
+                       asp-controller="Product"
+                       asp-action="Index">
+                        SoleHub
+                    </a>
+                }
+                else
+                {
+                    <a class="navbar-brand brand-logo"
+                       asp-controller="Auth"
+                       asp-action="Login">
+                        SoleHub
+                    </a>
+                }
+
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#mainNavbar"
+                        aria-controls="mainNavbar"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="mainNavbar">
+                    @if (isLoggedIn)
+                    {
+                        <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-3">
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   asp-controller="Product"
+                                   asp-action="Index">
+                                    Sneakers
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   asp-controller="Product"
+                                   asp-action="Index"
+                                   asp-route-category="Running">
+                                    Running
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   asp-controller="Product"
+                                   asp-action="Index"
+                                   asp-route-category="Slides">
+                                    Slides
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   asp-controller="Product"
+                                   asp-action="Index"
+                                   asp-route-category="Lifestyle">
+                                    Lifestyle
+                                </a>
+                            </li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-3">
+                            <li class="nav-item">
+                                <span class="nav-link text-muted">
+                                    Sneakers
+                                </span>
+                            </li>
+
+                            <li class="nav-item">
+                                <span class="nav-link text-muted">
+                                    Running
+                                </span>
+                            </li>
+
+                            <li class="nav-item">
+                                <span class="nav-link text-muted">
+                                    Slides
+                                </span>
+                            </li>
+
+                            <li class="nav-item">
+                                <span class="nav-link text-muted">
+                                    Lifestyle
+                                </span>
+                            </li>
+                        </ul>
+                    }
+
+                    <div class="d-flex align-items-center gap-3">
+                        @if (!isLoggedIn)
+                        {
+                            <a class="nav-icon-link"
+                               asp-controller="Auth"
+                               asp-action="Login">
+                                <i class="bi bi-box-arrow-in-right"></i>
+                                Login
+                            </a>
+
+                            <a class="nav-icon-link"
+                               asp-controller="Auth"
+                               asp-action="Register">
+                                <i class="bi bi-person-plus"></i>
+                                Register
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="nav-icon-link">
+                                <i class="bi bi-person-circle"></i>
+                                @role: @username
+                            </span>
+
+                            <a class="nav-icon-link"
+                               asp-controller="Account"
+                               asp-action="Profile">
+                                <i class="bi bi-person"></i>
+                                Profile
+                            </a>
+
+                            <a class="nav-icon-link"
+                               asp-controller="Cart"
+                               asp-action="OrderHistory">
+                                <i class="bi bi-bag-check"></i>
+                                Orders
+                            </a>
+
+                            <a class="nav-icon-link"
+                               asp-controller="Cart"
+                               asp-action="Index">
+                                <i class="bi bi-cart"></i>
+                                Cart
+                            </a>
+
+                            <a class="nav-icon-link"
+                               asp-controller="Auth"
+                               asp-action="Logout">
+                                <i class="bi bi-box-arrow-right"></i>
+                                Logout
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="page-wrapper">
+        @RenderBody()
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <span>&copy; 2026 SoleHub. Student MVC Project.</span>
+        </div>
+    </footer>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

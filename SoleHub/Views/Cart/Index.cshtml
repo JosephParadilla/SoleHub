@@ -1,0 +1,113 @@
+﻿@model List<SoleHub.Models.CartItem>
+
+@{
+    ViewData["Title"] = "My Cart";
+
+    decimal subtotal = 0;
+
+    if (Model != null)
+    {
+        subtotal = Model.Sum(item => item.LineTotal);
+    }
+}
+
+<section class="container py-5">
+    <div class="page-heading">
+        <h1>My Cart</h1>
+        <p>Review your selected SoleHub items.</p>
+    </div>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-info rounded-4">
+            @TempData["Message"]
+        </div>
+    }
+
+    @if (Model == null || Model.Count == 0)
+    {
+        <div class="empty-state">
+            <i class="bi bi-cart-x"></i>
+
+            <h3>Your cart is empty.</h3>
+
+            <p>Start shopping and add your favorite sneakers.</p>
+
+            <a asp-controller="Product"
+               asp-action="Index"
+               class="btn btn-dark">
+                Continue Shopping
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="cart-list">
+                    @foreach (var item in Model)
+                    {
+                        <div class="cart-item">
+                            <img src="@item.ImageUrl" alt="@item.Name" />
+
+                            <div class="cart-item-info">
+                                <span>@item.Brand</span>
+
+                                <h5>@item.Name</h5>
+
+                                <p>Size: @item.Size</p>
+                                <p>Quantity: @item.Quantity</p>
+                            </div>
+
+                            <div class="cart-item-price">
+                                <strong>₱@item.LineTotal.ToString("N2")</strong>
+
+                                <a asp-controller="Cart"
+                                   asp-action="Remove"
+                                   asp-route-id="@item.ProductId"
+                                   class="btn btn-sm btn-outline-danger mt-2">
+                                    Remove
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="summary-card">
+                    <h4>Order Summary</h4>
+
+                    <div class="summary-line">
+                        <span>Subtotal</span>
+                        <strong>₱@subtotal.ToString("N2")</strong>
+                    </div>
+
+                    <div class="summary-line">
+                        <span>Shipping</span>
+                        <strong>FREE</strong>
+                    </div>
+
+                    <hr />
+
+                    <div class="summary-line total-line">
+                        <span>Total</span>
+                        <strong>₱@subtotal.ToString("N2")</strong>
+                    </div>
+
+                    <a asp-controller="Cart"
+                       asp-action="Checkout"
+                       class="btn btn-dark w-100 mt-3">
+                        Checkout Securely
+                    </a>
+
+                    <a asp-controller="Cart"
+                       asp-action="Clear"
+                       class="btn btn-outline-secondary w-100 mt-2">
+                        Clear Cart
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</section>

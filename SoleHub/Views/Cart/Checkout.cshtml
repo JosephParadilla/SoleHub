@@ -1,0 +1,240 @@
+﻿@using Microsoft.AspNetCore.Http
+@model List<SoleHub.Models.CartItem>
+
+@{
+    ViewData["Title"] = "Checkout";
+    ViewData["HideTopBar"] = true;
+
+    decimal subtotal = 0;
+
+    if (Model != null)
+    {
+        foreach (var item in Model)
+        {
+            subtotal += item.LineTotal;
+        }
+    }
+
+    decimal shipping = subtotal >= 3000 ? 0 : 80;
+    decimal total = subtotal + shipping;
+}
+
+<section class="container py-5">
+    <div class="page-heading">
+        <h1>Checkout</h1>
+        <p>Complete your SoleHub order.</p>
+    </div>
+
+    @if (Model == null || Model.Count == 0)
+    {
+        <div class="empty-state">
+            <h3>No items to checkout.</h3>
+
+            <a asp-controller="Product" asp-action="Index" class="btn btn-dark">
+                Back to Products
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="checkout-card">
+                    <h4>Shipping Details</h4>
+
+                    <form asp-controller="Cart" asp-action="ProcessPayment" method="post">
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text"
+                                   name="fullName"
+                                   value="@Context.Session.GetString("FullName")"
+                                   class="form-control"
+                                   required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Contact Number</label>
+                            <input type="text"
+                                   name="contactNumber"
+                                   class="form-control"
+                                   placeholder="09XXXXXXXXX"
+                                   required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email"
+                                   name="email"
+                                   class="form-control"
+                                   placeholder="customer@email.com"
+                                   required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Courier</label>
+                            <select name="courier" class="form-select" required>
+                                <option value="">Select Courier</option>
+                                <option value="J&T Express">J&T Express</option>
+                                <option value="LBC Express">LBC Express</option>
+                                <option value="Flash Express">Flash Express</option>
+                                <option value="SPX Express">SPX Express</option>
+                                <option value="Ninja Van">Ninja Van</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Province</label>
+                            <select id="province" name="province" class="form-select" required>
+                                <option value="">Select Province</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">City / Municipality</label>
+                            <select id="city" name="city" class="form-select" required>
+                                <option value="">Select City / Municipality</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Barangay</label>
+                            <select id="barangay" name="barangay" class="form-select" required>
+                                <option value="">Select Barangay</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Street Address / House No.</label>
+                            <textarea name="streetAddress"
+                                  class="form-control"
+                                  rows="2"
+                                  placeholder="House no., street, building, subdivision"
+                                  required></textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Payment Method</label>
+
+                            <select name="paymentMethod" class="form-select" required>
+                                <option value="Cash on Delivery">Cash on Delivery</option>
+                                <option value="GCash">GCash</option>
+                                <option value="Credit/Debit Card">Credit/Debit Card</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-dark btn-lg w-100">
+                            Confirm Purchase
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="summary-card">
+                    <h4>Order Summary</h4>
+
+                    @foreach (var item in Model)
+                    {
+                        <div class="checkout-item">
+                            <span>@item.Name Size @item.Size x @item.Quantity</span>
+                            <strong>₱@item.LineTotal.ToString("N2")</strong>
+                        </div>
+                    }
+
+                    <hr />
+
+                    <div class="summary-line">
+                        <span>Subtotal</span>
+                        <strong>₱@subtotal.ToString("N2")</strong>
+                    </div>
+
+                    <div class="summary-line">
+                        <span>Shipping</span>
+                        <strong>@(shipping == 0 ? "FREE" : "₱" + shipping.ToString("N2"))</strong>
+                    </div>
+
+                    <div class="summary-line total-line">
+                        <span>Total</span>
+                        <strong>₱@total.ToString("N2")</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</section>
+
+@section Scripts {
+    <script>
+        const locationData = {
+            "Cebu": {
+                "Cebu City": ["Lahug", "Mabolo", "Talamban", "Guadalupe", "Banilad"],
+                "Mandaue City": ["Banilad", "Centro", "Tipolo", "Subangdaku", "Cabancalan"],
+                "Lapu-Lapu City": ["Pajo", "Basak", "Mactan", "Marigondon", "Punta Engaño"]
+            },
+            "Metro Manila": {
+                "Quezon City": ["Batasan Hills", "Commonwealth", "Bagumbayan", "Cubao", "Novaliches"],
+                "Manila": ["Ermita", "Malate", "Sampaloc", "Tondo", "Binondo"],
+                "Makati": ["Poblacion", "Bel-Air", "San Lorenzo", "Guadalupe Nuevo", "Olympia"]
+            },
+            "Davao del Sur": {
+                "Davao City": ["Buhangin", "Matina", "Toril", "Agdao", "Talomo"],
+                "Digos City": ["Aplaya", "Cogon", "Zone 1", "Tres de Mayo", "San Jose"]
+            },
+            "Iloilo": {
+                "Iloilo City": ["Jaro", "Molo", "Mandurriao", "La Paz", "City Proper"],
+                "Passi City": ["Poblacion Ilawod", "Poblacion Ilaya", "Sablogon", "Salngan"]
+            },
+            "Bohol": {
+                "Tagbilaran City": ["Cogon", "Dao", "Mansasa", "Bool", "Poblacion I"],
+                "Panglao": ["Tawala", "Danao", "Doljo", "Poblacion", "Bolod"]
+            }
+        };
+
+        const provinceSelect = document.getElementById("province");
+        const citySelect = document.getElementById("city");
+        const barangaySelect = document.getElementById("barangay");
+
+        function loadProvinces() {
+            provinceSelect.innerHTML = '<option value="">Select Province</option>';
+
+            for (const province in locationData) {
+                provinceSelect.innerHTML += `<option value="${province}">${province}</option>`;
+            }
+        }
+
+        function loadCities() {
+            citySelect.innerHTML = '<option value="">Select City / Municipality</option>';
+            barangaySelect.innerHTML = '<option value="">Select Barangay</option>';
+
+            const province = provinceSelect.value;
+
+            if (!province) {
+                return;
+            }
+
+            for (const city in locationData[province]) {
+                citySelect.innerHTML += `<option value="${city}">${city}</option>`;
+            }
+        }
+
+        function loadBarangays() {
+            barangaySelect.innerHTML = '<option value="">Select Barangay</option>';
+
+            const province = provinceSelect.value;
+            const city = citySelect.value;
+
+            if (!province || !city) {
+                return;
+            }
+
+            locationData[province][city].forEach(function (barangay) {
+                barangaySelect.innerHTML += `<option value="${barangay}">${barangay}</option>`;
+            });
+        }
+
+        provinceSelect.addEventListener("change", loadCities);
+        citySelect.addEventListener("change", loadBarangays);
+
+        loadProvinces();
+    </script>
+}

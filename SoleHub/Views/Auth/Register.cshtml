@@ -1,0 +1,73 @@
+﻿@model SoleHub.Models.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+    ViewData["HideTopBar"] = true;
+}
+
+<section class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="profile-card">
+                <h1 class="fw-bold mb-2">Create Account</h1>
+                <p class="text-muted mb-4">Register as a customer.</p>
+
+                @if (ViewBag.Error != null)
+                {
+                    <div class="alert alert-danger rounded-4">
+                        @ViewBag.Error
+                    </div>
+                }
+
+                <form asp-controller="Auth" asp-action="Register" method="post">
+                    <div class="mb-3">
+                        <label class="form-label">Full Name</label>
+                        <input asp-for="FullName" class="form-control" placeholder="Enter full name" />
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input asp-for="Email" class="form-control" placeholder="Enter email" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <input asp-for="Username" class="form-control" placeholder="Choose username" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input asp-for="Password" type="password" class="form-control" placeholder="Enter password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Confirm Password</label>
+                        <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Confirm password" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-dark w-100">
+                        Register
+                    </button>
+                </form>
+
+                <hr />
+
+                <div class="text-center">
+                    <p class="mb-2">Already have an account?</p>
+                    <a asp-controller="Auth" asp-action="Login" class="btn btn-outline-dark w-100">
+                        Back to Login
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

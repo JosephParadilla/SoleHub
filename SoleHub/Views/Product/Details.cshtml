@@ -1,0 +1,154 @@
+﻿@model SoleHub.Models.ProductDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.Product.Name;
+}
+
+<section class="container-fluid px-4 py-5">
+    <div class="product-detail-layout">
+        <div class="product-gallery">
+            <div class="gallery-main">
+                <img src="@Model.Product.ImageUrl" alt="@Model.Product.Name" asp-append-version="true" />
+            </div>
+
+            <div class="gallery-main">
+                <img src="@Model.Product.ImageUrl" alt="@Model.Product.Name" asp-append-version="true" />
+            </div>
+
+            <div class="gallery-main">
+                <img src="@Model.Product.ImageUrl" alt="@Model.Product.Name" asp-append-version="true" />
+            </div>
+
+            <div class="gallery-main">
+                <img src="@Model.Product.ImageUrl" alt="@Model.Product.Name" asp-append-version="true" />
+            </div>
+        </div>
+
+        <div class="product-detail-panel">
+            <div class="breadcrumb-text">
+                Home / Sneakers / @Model.Product.Category
+            </div>
+
+            <span class="product-badge">NEW</span>
+
+            <h1>@Model.Product.Name</h1>
+
+            <p class="detail-brand">@Model.Product.Brand</p>
+
+            <div class="detail-rating">
+                <span>★★★★★</span>
+                <strong>4.8</strong>
+                <small>(619 Reviews)</small>
+            </div>
+
+            <h3 class="detail-price">₱@Model.Product.Price.ToString("N2")</h3>
+
+            <p class="detail-color">
+                Category: @Model.Product.Category
+            </p>
+
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-warning rounded-4">
+                    @TempData["Message"]
+                </div>
+            }
+
+            <form asp-controller="Product"
+                  asp-action="AddToCart"
+                  method="post"
+                  id="sizeForm">
+
+                <input type="hidden" name="id" value="@Model.Product.Id" />
+
+                <div class="size-header">
+                    <h4>Select a size</h4>
+                    <a href="#" onclick="return false;">Size chart</a>
+                </div>
+
+                <div id="sizeError" class="alert alert-danger rounded-4 d-none">
+                    Please select a shoe size before adding this item to your cart.
+                </div>
+
+                <div class="size-grid">
+                    @foreach (var size in Model.AvailableSizes)
+                    {
+                        <label class="size-option">
+                            <input type="radio" name="size" value="@size" />
+                            <span>@size</span>
+                        </label>
+                    }
+
+                    @foreach (var size in Model.UnavailableSizes)
+                    {
+                        <label class="size-option unavailable">
+                            <input type="radio" disabled />
+                            <span>@size</span>
+                        </label>
+                    }
+                </div>
+
+                <button type="submit" class="btn btn-dark btn-lg w-100 mt-4">
+                    Add to Cart
+                    <i class="bi bi-cart ms-1"></i>
+                </button>
+            </form>
+
+            <div class="important-message mt-4">
+                <h5>
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                    Important Message
+                </h5>
+
+                <p>
+                    Available sizes are shown above. Unavailable sizes are disabled.
+                    Please confirm your selected size before adding the item to your cart.
+                </p>
+            </div>
+
+            <div class="detail-delivery mt-4">
+                <div>
+                    <i class="bi bi-truck"></i>
+                    <strong>PH Delivery</strong>
+                    <p>Ships through J&T Express, LBC, Flash Express, or SPX.</p>
+                </div>
+
+                <div>
+                    <i class="bi bi-cash-coin"></i>
+                    <strong>Payment Options</strong>
+                    <p>Cash on Delivery, GCash, or card payment available.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        const sizeForm = document.getElementById("sizeForm");
+        const sizeError = document.getElementById("sizeError");
+
+        sizeForm.addEventListener("submit", function (event) {
+            const selectedSize = document.querySelector('input[name="size"]:checked');
+
+            if (!selectedSize) {
+                event.preventDefault();
+
+                sizeError.classList.remove("d-none");
+
+                sizeError.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+            }
+        });
+
+        const sizeRadios = document.querySelectorAll('input[name="size"]');
+
+        sizeRadios.forEach(function (radio) {
+            radio.addEventListener("change", function () {
+                sizeError.classList.add("d-none");
+            });
+        });
+    </script>
+}

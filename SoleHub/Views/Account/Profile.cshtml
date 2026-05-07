@@ -1,0 +1,92 @@
+﻿@model UserProfile
+
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<section class="container py-5">
+    <div class="page-heading">
+        <h1>My Profile</h1>
+        <p>Manage your SoleHub account details and upload your profile picture.</p>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success rounded-4">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger rounded-4">
+            @TempData["Error"]
+        </div>
+    }
+
+    <div class="row g-4">
+        <div class="col-lg-4">
+            <div class="profile-card text-center">
+                <div class="avatar-box">
+                    @if (!string.IsNullOrEmpty(Model.ProfilePictureUrl))
+                    {
+                        <img src="@Model.ProfilePictureUrl" alt="Profile Picture" />
+                    }
+                    else
+                    {
+                        <div class="avatar-placeholder">
+                            <i class="bi bi-person"></i>
+                        </div>
+                    }
+                </div>
+
+                <h3>@Model.FullName</h3>
+                <p>@Model.Email</p>
+
+                <form asp-controller="Account"
+                      asp-action="UploadAvatar"
+                      method="post"
+                      enctype="multipart/form-data">
+                    <input type="file" name="photo" class="form-control mb-3" required />
+
+                    <button type="submit" class="btn btn-dark w-100">
+                        Upload Profile Picture
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="profile-card">
+                <h4>Account Management</h4>
+
+                <form asp-controller="Account" asp-action="UpdateProfile" method="post">
+                    <input type="hidden" asp-for="ProfilePictureUrl" />
+
+                    <div class="mb-3">
+                        <label class="form-label">Full Name</label>
+                        <input asp-for="FullName" class="form-control" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Email Address</label>
+                        <input asp-for="Email" type="email" class="form-control" required />
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Default Shipping Address</label>
+                        <textarea asp-for="Address" class="form-control" rows="3" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-dark">
+                        Save Changes
+                    </button>
+
+                    <a asp-controller="Cart" asp-action="OrderHistory" class="btn btn-outline-dark ms-2">
+                        View Order History
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,111 @@
+﻿@using Microsoft.AspNetCore.Http
+@model List<SoleHub.Models.Order>
+
+@{
+    ViewData["Title"] = "Order History";
+
+    string role = Context.Session.GetString("Role") ?? "";
+}
+
+<section class="container py-5">
+    <div class="page-heading">
+        <h1>Order History</h1>
+
+        @if (role == "Admin")
+        {
+            <p>Admin view: all customer orders.</p>
+        }
+        else
+        {
+            <p>Track your previous SoleHub purchases.</p>
+        }
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success rounded-4">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (Model == null || Model.Count == 0)
+    {
+        <div class="empty-state">
+            <i class="bi bi-clock-history"></i>
+
+            <h3>No orders yet.</h3>
+
+            <p>Checkout your cart to create your first order.</p>
+
+            <a asp-controller="Product" asp-action="Index" class="btn btn-dark">
+                Shop Now
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="order-list">
+            @foreach (var order in Model)
+            {
+                <div class="order-card">
+                    <div class="order-header">
+                        <div>
+                            <h4>@order.OrderNumber</h4>
+                            <p>@order.OrderDate.ToString("MMMM dd, yyyy hh:mm tt")</p>
+                        </div>
+
+                        <span class="order-status">@order.Status</span>
+                    </div>
+
+                    <div class="mb-3">
+                        <strong>Customer:</strong> @order.CustomerName <br />
+                        <strong>Contact:</strong> @order.ContactNumber <br />
+                        <strong>Email:</strong> @order.Email <br />
+                        <strong>Courier:</strong> @order.Courier <br />
+                        <strong>Address:</strong> @order.FullAddress <br />
+                        <strong>Payment:</strong> @order.PaymentMethod
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Brand</th>
+                                    <th>Size</th>
+                                    <th>Qty</th>
+                                    <th>Price</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var item in order.Items)
+                                {
+                                    <tr>
+                                        <td>@item.ProductName</td>
+                                        <td>@item.Brand</td>
+                                        <td>@item.Size</td>
+                                        <td>@item.Quantity</td>
+                                        <td>₱@item.Price.ToString("N2")</td>
+                                        <td>₱@item.LineTotal.ToString("N2")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="order-footer">
+                        <div>
+                            <strong>Subtotal:</strong> ₱@order.Subtotal.ToString("N2")
+                            <br />
+                            <strong>Shipping:</strong> @(order.ShippingFee == 0 ? "FREE" : "₱" + order.ShippingFee.ToString("N2"))
+                        </div>
+
+                        <h5>Total: ₱@order.Total.ToString("N2")</h5>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</section>
