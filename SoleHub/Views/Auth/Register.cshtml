@@ -5,69 +5,135 @@
     ViewData["HideTopBar"] = true;
 }
 
-<section class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="profile-card">
-                <h1 class="fw-bold mb-2">Create Account</h1>
-                <p class="text-muted mb-4">Register as a customer.</p>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
-                @if (ViewBag.Error != null)
-                {
-                    <div class="alert alert-danger rounded-4">
-                        @ViewBag.Error
-                    </div>
-                }
+<style>
+    /* Matches the login page background and layout */
+    body {
+        background-color: #ffffff;
+    }
 
-                <form asp-controller="Auth" asp-action="Register" method="post">
-                    <div class="mb-3">
-                        <label class="form-label">Full Name</label>
-                        <input asp-for="FullName" class="form-control" placeholder="Enter full name" />
-                        <span asp-validation-for="FullName" class="text-danger"></span>
-                    </div>
+    .custom-input {
+        background-color: #eef3ff !important; /* Light blue tint from login screenshot */
+        border: none !important;
+        border-radius: 0 !important;
+        padding: 0.75rem 1rem;
+    }
 
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input asp-for="Email" class="form-control" placeholder="Enter email" />
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                    </div>
+        .custom-input:focus {
+            box-shadow: none;
+            background-color: #e5edff !important;
+        }
 
-                    <div class="mb-3">
-                        <label class="form-label">Username</label>
-                        <input asp-for="Username" class="form-control" placeholder="Choose username" />
-                        <span asp-validation-for="Username" class="text-danger"></span>
-                    </div>
+    .btn-solehub {
+        background-color: #000;
+        color: #fff;
+        font-weight: bold;
+        letter-spacing: 2px;
+        border-radius: 0;
+        padding: 15px;
+        transition: 0.3s;
+    }
 
-                    <div class="mb-3">
-                        <label class="form-label">Password</label>
-                        <input asp-for="Password" type="password" class="form-control" placeholder="Enter password" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
+        .btn-solehub:hover {
+            background-color: #333;
+            color: #fff;
+        }
 
-                    <div class="mb-4">
-                        <label class="form-label">Confirm Password</label>
-                        <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Confirm password" />
-                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                    </div>
+    .label-header {
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+    }
+</style>
 
-                    <button type="submit" class="btn btn-dark w-100">
-                        Register
-                    </button>
-                </form>
+<section class="container d-flex flex-column justify-content-center align-items-center min-vh-100 py-5">
 
-                <hr />
+    <div class="text-center mb-4">
+        <h1 class="fw-bold display-6 text-uppercase" style="letter-spacing: -1px;">Create Account</h1>
+        <p class="text-muted text-uppercase small label-header">Register as a customer</p>
+    </div>
 
-                <div class="text-center">
-                    <p class="mb-2">Already have an account?</p>
-                    <a asp-controller="Auth" asp-action="Login" class="btn btn-outline-dark w-100">
-                        Back to Login
-                    </a>
-                </div>
+    <div class="col-md-5 col-lg-4">
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger border-0 rounded-0 small">
+                @ViewBag.Error
             </div>
+        }
+
+        <form asp-controller="Auth" asp-action="Register" method="post">
+            <div class="mb-3">
+                <label class="form-label fw-bold text-uppercase text-muted label-header">Full Name</label>
+                <input asp-for="FullName" class="form-control custom-input" placeholder="Enter full name" />
+                <span asp-validation-for="FullName" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold text-uppercase text-muted label-header">Email</label>
+                <input asp-for="Email" class="form-control custom-input" placeholder="Enter email" />
+                <span asp-validation-for="Email" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold text-uppercase text-muted label-header">Username</label>
+                <input asp-for="Username" class="form-control custom-input" placeholder="Choose username" />
+                <span asp-validation-for="Username" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-bold text-uppercase text-muted label-header">Password</label>
+                <div class="position-relative">
+                    <input asp-for="Password" type="password" class="form-control custom-input pe-5" id="password" placeholder="Enter password" />
+                    <button type="button" class="btn position-absolute end-0 top-50 translate-middle-y border-0 shadow-none toggle-password" data-target="password">
+                        <i class="bi bi-eye text-muted"></i>
+                    </button>
+                </div>
+                <span asp-validation-for="Password" class="text-danger small"></span>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label fw-bold text-uppercase text-muted label-header">Confirm Password</label>
+                <div class="position-relative">
+                    <input asp-for="ConfirmPassword" type="password" class="form-control custom-input pe-5" id="confirmPassword" placeholder="Confirm password" />
+                    <button type="button" class="btn position-absolute end-0 top-50 translate-middle-y border-0 shadow-none toggle-password" data-target="confirmPassword">
+                        <i class="bi bi-eye text-muted"></i>
+                    </button>
+                </div>
+                <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+            </div>
+
+            <button type="submit" class="btn btn-solehub w-100 text-uppercase">
+                Register
+            </button>
+        </form>
+
+        <div class="text-center mt-5">
+            <p class="text-muted small mb-1">Already have an account?</p>
+            <a asp-controller="Auth" asp-action="Login" class="fw-bold text-dark text-decoration-underline text-uppercase small">
+                Back to Login
+            </a>
         </div>
     </div>
 </section>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.querySelectorAll('.toggle-password').forEach(button => {
+            button.addEventListener('click', function () {
+                const targetId = this.getAttribute('data-target');
+                const input = document.getElementById(targetId);
+                const icon = this.querySelector('i');
+
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.replace('bi-eye', 'bi-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.replace('bi-eye-slash', 'bi-eye');
+                }
+            });
+        });
+    </script>
 }
