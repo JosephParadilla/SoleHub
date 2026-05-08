@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SoleHub.Data;
 
@@ -11,9 +12,11 @@ using SoleHub.Data;
 namespace SoleHub.Migrations
 {
     [DbContext(typeof(SoleHubDbContext))]
-    partial class SoleHubDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260507094826_RemoveFirst12Products")]
+    partial class RemoveFirst12Products
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,7 +52,7 @@ namespace SoleHub.Migrations
 
                     b.HasIndex("UserProfileId");
 
-                    b.ToTable("CartItems", (string)null);
+                    b.ToTable("CartItems");
                 });
 
             modelBuilder.Entity("SoleHub.Models.Order", b =>
@@ -118,7 +121,7 @@ namespace SoleHub.Migrations
 
                     b.HasIndex("UserProfileId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("SoleHub.Models.OrderItem", b =>
@@ -155,7 +158,7 @@ namespace SoleHub.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItems", (string)null);
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("SoleHub.Models.Product", b =>
@@ -188,7 +191,7 @@ namespace SoleHub.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
 
                     b.HasData(
                         new
@@ -1578,7 +1581,7 @@ namespace SoleHub.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserAccounts", (string)null);
+                    b.ToTable("UserAccounts");
 
                     b.HasData(
                         new
@@ -1625,7 +1628,7 @@ namespace SoleHub.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserProfiles", (string)null);
+                    b.ToTable("UserProfiles");
 
                     b.HasData(
                         new

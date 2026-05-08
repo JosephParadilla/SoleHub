@@ -3,11 +3,11 @@
 
 @{
     ViewData["Title"] = "Order History";
-
     string role = Context.Session.GetString("Role") ?? "";
 }
 
 <section class="container py-5">
+
     <div class="page-heading">
         <h1>Order History</h1>
 
@@ -21,6 +21,26 @@
         }
     </div>
 
+    @if (Model != null && Model.Count > 0)
+    {
+        <div class="mb-4">
+
+            <form asp-action="ClearOrderHistory" method="post">
+
+                <button type="submit"
+                        class="btn btn-outline-danger rounded-pill"
+                        onclick="return confirm('Clear all order history?')">
+
+                    <i class="bi bi-trash"></i>
+                    Clear Order History
+
+                </button>
+
+            </form>
+
+        </div>
+    }
+
     @if (TempData["Success"] != null)
     {
         <div class="alert alert-success rounded-4">
@@ -28,46 +48,98 @@
         </div>
     }
 
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger rounded-4">
+            @TempData["Error"]
+        </div>
+    }
+
     @if (Model == null || Model.Count == 0)
     {
         <div class="empty-state">
+
             <i class="bi bi-clock-history"></i>
 
             <h3>No orders yet.</h3>
 
             <p>Checkout your cart to create your first order.</p>
 
-            <a asp-controller="Product" asp-action="Index" class="btn btn-dark">
+            <a asp-controller="Product"
+               asp-action="Index"
+               class="btn btn-dark">
                 Shop Now
             </a>
+
         </div>
     }
     else
     {
         <div class="order-list">
+
             @foreach (var order in Model)
             {
                 <div class="order-card">
+
                     <div class="order-header">
+
                         <div>
                             <h4>@order.OrderNumber</h4>
-                            <p>@order.OrderDate.ToString("MMMM dd, yyyy hh:mm tt")</p>
+
+                            <p>
+                                @order.OrderDate.ToString("MMMM dd, yyyy hh:mm tt")
+                            </p>
                         </div>
 
-                        <span class="order-status">@order.Status</span>
+                        <div class="d-flex align-items-center gap-2">
+
+                            <span class="order-status @(order.Status.ToLower())">
+                                @order.Status
+                            </span>
+
+                            @if (order.Status == "Processing")
+                            {
+                                <form asp-action="CancelOrder" method="post">
+
+                                    <input type="hidden"
+                                           name="id"
+                                           value="@order.Id" />
+
+                                    <button type="submit"
+                                            class="btn btn-sm btn-danger rounded-pill"
+                                            onclick="return confirm('Cancel this order?')">
+
+                                        Cancel
+
+                                    </button>
+
+                                </form>
+                            }
+
+                        </div>
+
                     </div>
 
                     <div class="mb-3">
+
                         <strong>Customer:</strong> @order.CustomerName <br />
+
                         <strong>Contact:</strong> @order.ContactNumber <br />
+
                         <strong>Email:</strong> @order.Email <br />
+
                         <strong>Courier:</strong> @order.Courier <br />
+
                         <strong>Address:</strong> @order.FullAddress <br />
+
                         <strong>Payment:</strong> @order.PaymentMethod
+
                     </div>
 
                     <div class="table-responsive">
+
                         <table class="table align-middle">
+
                             <thead>
                                 <tr>
                                     <th>Item</th>
@@ -80,32 +152,89 @@
                             </thead>
 
                             <tbody>
+
                                 @foreach (var item in order.Items)
                                 {
                                     <tr>
+
                                         <td>@item.ProductName</td>
+
                                         <td>@item.Brand</td>
+
                                         <td>@item.Size</td>
+
                                         <td>@item.Quantity</td>
-                                        <td>₱@item.Price.ToString("N2")</td>
-                                        <td>₱@item.LineTotal.ToString("N2")</td>
+
+                                        <td>
+                                            ₱@item.Price.ToString("N2")
+                                        </td>
+
+                                        <td>
+                                            ₱@item.LineTotal.ToString("N2")
+                                        </td>
+
                                     </tr>
                                 }
-                            </tbody>
-                        </table>
-                    </div>
 
-                    <div class="order-footer">
-                        <div>
-                            <strong>Subtotal:</strong> ₱@order.Subtotal.ToString("N2")
-                            <br />
-                            <strong>Shipping:</strong> @(order.ShippingFee == 0 ? "FREE" : "₱" + order.ShippingFee.ToString("N2"))
-                        </div>
+                        </tbody>
 
-                        <h5>Total: ₱@order.Total.ToString("N2")</h5>
-                    </div>
+                    </table>
+
                 </div>
-            }
+
+                <div class="order-footer">
+
+                    <div>
+
+                        <strong>Subtotal:</strong>
+                        ₱@order.Subtotal.ToString("N2")
+
+                        <br />
+
+                        <strong>Shipping:</strong>
+
+                        @(order.ShippingFee == 0
+                                            ? "FREE"
+                                            : "₱" + order.ShippingFee.ToString("N2"))
+
+                </div>
+
+                        <h5>
+                            Total: ₱@order.Total.ToString("N2")
+                        </h5>
+
+                    </div>
+
+                </div>
+                }
+
         </div>
     }
+
 </section>
+
+<style>
+
+    .order-status {
+        padding: 6px 14px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+        .order-status.processing {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .order-status.cancelled {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .order-status.completed {
+            background: #dbeafe;
+            color: #1e3a8a;
+        }
+
+</style>

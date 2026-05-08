@@ -136,7 +136,57 @@
                     @foreach (var item in Model)
                     {
                         <div class="checkout-item">
-                            <span>@item.Name Size @item.Size x @item.Quantity</span>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+
+                                <div>
+                                    <span>
+                                        @item.Name
+                                        <br />
+                                        <small>Size @item.Size</small>
+                                    </span>
+                                </div>
+
+                                <div class="d-flex align-items-center gap-2">
+
+                                    <form asp-controller="Cart"
+                                          asp-action="UpdateQuantity"
+                                          method="post">
+
+                                        <input type="hidden"
+                                               name="cartItemId"
+                                               value="@item.Id" />
+
+                                        <select name="quantity"
+                                                class="form-select form-select-sm"
+                                                onchange="this.form.submit()">
+
+                                            @for (int qty = 1; qty <= 10; qty++)
+                                            {
+                                                if (qty == item.Quantity)
+                                                {
+                                                    <option value="@qty" selected>
+                                                        @qty
+                                                    </option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@qty">
+                                                        @qty
+                                                    </option>
+                                                }
+                                            }
+
+                                        </select>
+
+                                    </form>
+
+                                    <strong>
+                                        ₱@item.LineTotal.ToString("N2")
+                                    </strong>
+
+                                </div>
+
+                            </div>
                             <strong>₱@item.LineTotal.ToString("N2")</strong>
                         </div>
                     }
@@ -165,7 +215,7 @@
 
 @section Scripts {
     <script>
-        const locationData = {
+                const locationData = {
             "Cebu": {
                 "Cebu City": ["Lahug", "Mabolo", "Talamban", "Guadalupe", "Banilad"],
                 "Mandaue City": ["Banilad", "Centro", "Tipolo", "Subangdaku", "Cabancalan"],
@@ -174,7 +224,8 @@
             "Metro Manila": {
                 "Quezon City": ["Batasan Hills", "Commonwealth", "Bagumbayan", "Cubao", "Novaliches"],
                 "Manila": ["Ermita", "Malate", "Sampaloc", "Tondo", "Binondo"],
-                "Makati": ["Poblacion", "Bel-Air", "San Lorenzo", "Guadalupe Nuevo", "Olympia"]
+                "Makati": ["Poblacion", "Bel-Air", "San Lorenzo", "Guadalupe Nuevo", "Olympia"],
+                "Taguig": ["BGC", "Western Bicutan", "Ususan", "Tuktukan", "Pinagsama"]
             },
             "Davao del Sur": {
                 "Davao City": ["Buhangin", "Matina", "Toril", "Agdao", "Talomo"],
@@ -187,6 +238,33 @@
             "Bohol": {
                 "Tagbilaran City": ["Cogon", "Dao", "Mansasa", "Bool", "Poblacion I"],
                 "Panglao": ["Tawala", "Danao", "Doljo", "Poblacion", "Bolod"]
+            },
+            "Cavite": {
+                "Bacoor": ["Molino I", "Molino IV", "Habay I", "Bayanan", "Mambog I"],
+                "Imus": ["Anabu I-A", "Bucandala III", "Malagasang I-A", "Carsadang Bago I", "Tanzang Luma"],
+                "Dasmarinas": ["Salitran I", "San Agustin I", "Burol", "Langkaan I", "Sampaloc I"],
+                "Tagaytay": ["Mendez Crossing East", "Silang Junction South", "Maharlika", "Sungay North"]
+            },
+            "Laguna": {
+                "Santa Rosa": ["Balibago", "Don Jose", "Dita", "Malitlit", "Sinalhan"],
+                "Calamba": ["Canlubang", "Pansol", "Real", "Mayapa", "Barandal"],
+                "Binan": ["Mamplasan", "De La Paz", "San Francisco", "Zapote"]
+            },
+            "Pampanga": {
+                "Angeles City": ["Balibago", "Sapu-an", "Malabanias", "Cutcut", "Anunas"],
+                "San Fernando": ["Dolores", "Sindalan", "San Agustin", "Quebiawan", "Calulut"],
+                "Mabalacat": ["Dau", "Mabiga", "Camachiles", "Santa Ines"]
+            },
+            "Benguet": {
+                "Baguio City": ["Irisan", "Bakakeng Central", "Loakan Proper", "Camp 7", "Pacdal"],
+                "La Trinidad": ["Pico", "Poblacion", "Balili", "Wangal", "Betag"]
+            },
+            "Negros Occidental": {
+                "Bacolod": ["Mansilingan", "Estefania", "Tangub", "Villamonte", "Alijis"],
+                "Talisay": ["Bubog", "Dos Hermanas", "San Fernando", "Zone 3"]
+            },
+            "Misamis Oriental": {
+                "Cagayan de Oro": ["Carmen", "Balulang", "Nazareth", "Lapasan", "Patag"]
             }
         };
 

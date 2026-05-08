@@ -17,13 +17,6 @@ namespace SoleHub.Controllers
 
         public async Task<IActionResult> Index(string? searchString, string? category)
         {
-            int? userId = HttpContext.Session.GetInt32("UserId");
-
-            if (userId == null)
-            {
-                return RedirectToAction("Login", "Auth");
-            }
-
             ViewData["CurrentFilter"] = searchString;
             ViewData["CurrentCategory"] = category;
 
@@ -32,7 +25,6 @@ namespace SoleHub.Controllers
             if (!string.IsNullOrWhiteSpace(searchString))
             {
                 string search = searchString.ToLower();
-
                 products = products.Where(product =>
                     product.Name.ToLower().Contains(search) ||
                     product.Brand.ToLower().Contains(search) ||
@@ -42,7 +34,6 @@ namespace SoleHub.Controllers
             if (!string.IsNullOrWhiteSpace(category))
             {
                 string selectedCategory = category.ToLower();
-
                 products = products.Where(product =>
                     product.Category.ToLower() == selectedCategory);
             }
@@ -52,13 +43,6 @@ namespace SoleHub.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            int? userId = HttpContext.Session.GetInt32("UserId");
-
-            if (userId == null)
-            {
-                return RedirectToAction("Login", "Auth");
-            }
-
             var product = await _context.Products
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == id);
@@ -92,6 +76,7 @@ namespace SoleHub.Controllers
 
             if (userId == null)
             {
+                TempData["Message"] = "Please login to add items to your cart.";
                 return RedirectToAction("Login", "Auth");
             }
 

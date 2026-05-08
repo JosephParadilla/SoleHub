@@ -56,7 +56,43 @@
                                 <h5>@item.Name</h5>
 
                                 <p>Size: @item.Size</p>
-                                <p>Quantity: @item.Quantity</p>
+                                <form asp-controller="Cart"
+                                      asp-action="UpdateQuantity"
+                                      method="post"
+                                      class="mt-2">
+
+                                    <input type="hidden"
+                                           name="cartItemId"
+                                           value="@item.Id" />
+
+                                    <label class="small fw-semibold">
+                                        Quantity
+                                    </label>
+
+                                    <select name="quantity"
+                                            class="form-select form-select-sm"
+                                            style="width: 90px;"
+                                            onchange="this.form.submit()">
+
+                                        @for (int qty = 1; qty <= 10; qty++)
+                                        {
+                                            if (qty == item.Quantity)
+                                            {
+                                                <option value="@qty" selected>
+                                                    @qty
+                                                </option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@qty">
+                                                    @qty
+                                                </option>
+                                            }
+                                        }
+
+                                    </select>
+
+                                </form>
                             </div>
 
                             <div class="cart-item-price">

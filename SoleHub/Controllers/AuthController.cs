@@ -112,8 +112,9 @@ namespace SoleHub.Controllers
             _context.UserProfiles.Add(userProfile);
             await _context.SaveChangesAsync();
 
-            HttpContext.Session.SetInt32("UserId", userProfile.Id);
-            HttpContext.Session.SetString("FullName", userProfile.FullName);
+            // FIXED: use userAccount.Id not userProfile.Id
+            HttpContext.Session.SetInt32("UserId", userAccount.Id);
+            HttpContext.Session.SetString("FullName", userAccount.FullName);
             HttpContext.Session.SetString("Username", userAccount.Username);
             HttpContext.Session.SetString("Role", userAccount.Role);
 

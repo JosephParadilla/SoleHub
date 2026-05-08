@@ -100,122 +100,13 @@ namespace SoleHub.Data
                 }
             );
 
-            modelBuilder.Entity<Product>().HasData(
-                new Product
-                {
-                    Id = 1,
-                    Name = "Alphafly Next%",
-                    Brand = "Nike",
-                    Category = "Running",
-                    Price = 15995.00m,
-                    ImageUrl = "/images/alphafly.png"
-                },
-                new Product
-                {
-                    Id = 2,
-                    Name = "Yeezy Slides",
-                    Brand = "Adidas",
-                    Category = "Slides",
-                    Price = 3999.00m,
-                    ImageUrl = "/images/yeezy.png"
-                },
-                new Product
-                {
-                    Id = 3,
-                    Name = "Classic All-Terrain",
-                    Brand = "Crocs",
-                    Category = "Slides",
-                    Price = 3499.00m,
-                    ImageUrl = "/images/crocs.png"
-                },
-                new Product
-                {
-                    Id = 4,
-                    Name = "Air Jordan 1 Low",
-                    Brand = "Nike",
-                    Category = "Lifestyle",
-                    Price = 6995.00m,
-                    ImageUrl = "/images/aj1.png"
-                },
-                new Product
-                {
-                    Id = 5,
-                    Name = "Ultraboost Light",
-                    Brand = "Adidas",
-                    Category = "Running",
-                    Price = 9995.00m,
-                    ImageUrl = "/images/ultraboost.png"
-                },
-                new Product
-                {
-                    Id = 6,
-                    Name = "Forum Low",
-                    Brand = "Adidas",
-                    Category = "Lifestyle",
-                    Price = 5995.00m,
-                    ImageUrl = "/images/forum.png"
-                },
-                new Product
-                {
-                    Id = 7,
-                    Name = "Old Skool",
-                    Brand = "Vans",
-                    Category = "Skate",
-                    Price = 4298.00m,
-                    ImageUrl = "/images/vans.png"
-                },
-                new Product
-                {
-                    Id = 8,
-                    Name = "Chuck Taylor 70",
-                    Brand = "Converse",
-                    Category = "Lifestyle",
-                    Price = 3890.00m,
-                    ImageUrl = "/images/converse.png"
-                },
-                new Product
-                {
-                    Id = 9,
-                    Name = "Dunk Low Retro",
-                    Brand = "Nike",
-                    Category = "Lifestyle",
-                    Price = 6895.00m,
-                    ImageUrl = "/images/dunk.png"
-                },
-                new Product
-                {
-                    Id = 10,
-                    Name = "Cloudmonster",
-                    Brand = "On",
-                    Category = "Running",
-                    Price = 10995.00m,
-                    ImageUrl = "/images/on.png"
-                },
-                new Product
-                {
-                    Id = 11,
-                    Name = "Gel-Kayano 30",
-                    Brand = "ASICS",
-                    Category = "Running",
-                    Price = 9995.00m,
-                    ImageUrl = "/images/asics1.png"
-                },
-                new Product
-                {
-                    Id = 12,
-                    Name = "Samba OG",
-                    Brand = "Adidas",
-                    Category = "Lifestyle",
-                    Price = 5995.00m,
-                    ImageUrl = "/images/samba.png"
-                }
-            );
+            
 
             var extraImageFiles = new[]
             {
                 "nike16.png", "nike17.png", "nike18.png", "nike20.png", "nike21.png", "nikke19.png",
 
-                "ad1.png", "ad2.png", "ad3.png", "ad4.png", "ad5.png", "ad6.png", "ad7.png", "ad8.png", "ad9.png", "ad10.png",
+                "ad1.png", "ad2.png", "ad3.png", "ad4.png", "ad6.png", "ad7.png", "ad8.png", "ad9.png", "ad10.png",
                 "ad11.png", "ad12.png", "ad14.png", "ad15.png", "ad16.png", "ad17.png", "ad18.png", "ad19.png", "ad20.png",
                 "ad22.png", "ad23.png", "ad24.png", "ad25.png", "ad26.png", "ad27.png", "ad28.png", "ad29.png", "ad30.png",
                 "ad31.png", "ad32.png", "ad33.png", "ad34.png", "ad35.png", "ad36.png",
