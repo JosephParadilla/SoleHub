@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SoleHub.Data;
 
@@ -11,9 +12,11 @@ using SoleHub.Data;
 namespace SoleHub.Migrations
 {
     [DbContext(typeof(SoleHubDbContext))]
-    partial class SoleHubDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260508051436_VansAdditional")]
+    partial class VansAdditional
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -547,7 +550,7 @@ namespace SoleHub.Migrations
                             Id = 52,
                             Brand = "Nike",
                             Category = "Running",
-                            ImageUrl = "/images/nike2.png",
+                            ImageUrl = "/images/nike1.jpg",
                             Name = "Nike Shoe 52",
                             Price = 9495.00m
                         },
@@ -556,7 +559,7 @@ namespace SoleHub.Migrations
                             Id = 53,
                             Brand = "Nike",
                             Category = "Running",
-                            ImageUrl = "/images/nike3.png",
+                            ImageUrl = "/images/nike2.png",
                             Name = "Nike Shoe 53",
                             Price = 4995.00m
                         },
@@ -565,7 +568,7 @@ namespace SoleHub.Migrations
                             Id = 54,
                             Brand = "Nike",
                             Category = "Running",
-                            ImageUrl = "/images/nike4.png",
+                            ImageUrl = "/images/nike3.png",
                             Name = "Nike Shoe 54",
                             Price = 5495.00m
                         },
@@ -574,7 +577,7 @@ namespace SoleHub.Migrations
                             Id = 55,
                             Brand = "Nike",
                             Category = "Running",
-                            ImageUrl = "/images/nike5.png",
+                            ImageUrl = "/images/nike4.png",
                             Name = "Nike Shoe 55",
                             Price = 5995.00m
                         },
@@ -583,7 +586,7 @@ namespace SoleHub.Migrations
                             Id = 56,
                             Brand = "Nike",
                             Category = "Running",
-                            ImageUrl = "/images/nike6.png",
+                            ImageUrl = "/images/nike5.png",
                             Name = "Nike Shoe 56",
                             Price = 6495.00m
                         },
@@ -592,7 +595,7 @@ namespace SoleHub.Migrations
                             Id = 57,
                             Brand = "Nike",
                             Category = "Running",
-                            ImageUrl = "/images/nike7.png",
+                            ImageUrl = "/images/nike6.png",
                             Name = "Nike Shoe 57",
                             Price = 6995.00m
                         },
@@ -601,7 +604,7 @@ namespace SoleHub.Migrations
                             Id = 58,
                             Brand = "Nike",
                             Category = "Running",
-                            ImageUrl = "/images/nike8.png",
+                            ImageUrl = "/images/nike7.png",
                             Name = "Nike Shoe 58",
                             Price = 7495.00m
                         },
@@ -610,7 +613,7 @@ namespace SoleHub.Migrations
                             Id = 59,
                             Brand = "Nike",
                             Category = "Running",
-                            ImageUrl = "/images/nike9.png",
+                            ImageUrl = "/images/nike8.png",
                             Name = "Nike Shoe 59",
                             Price = 7995.00m
                         },
@@ -619,7 +622,7 @@ namespace SoleHub.Migrations
                             Id = 60,
                             Brand = "Nike",
                             Category = "Running",
-                            ImageUrl = "/images/nike10.png",
+                            ImageUrl = "/images/nike9.png",
                             Name = "Nike Shoe 60",
                             Price = 8495.00m
                         },
@@ -628,7 +631,7 @@ namespace SoleHub.Migrations
                             Id = 61,
                             Brand = "Nike",
                             Category = "Running",
-                            ImageUrl = "/images/nike11.png",
+                            ImageUrl = "/images/nike10.png",
                             Name = "Nike Shoe 61",
                             Price = 8995.00m
                         },
@@ -637,7 +640,7 @@ namespace SoleHub.Migrations
                             Id = 62,
                             Brand = "Nike",
                             Category = "Running",
-                            ImageUrl = "/images/nike12.png",
+                            ImageUrl = "/images/nike11.png",
                             Name = "Nike Shoe 62",
                             Price = 9495.00m
                         },
@@ -646,7 +649,7 @@ namespace SoleHub.Migrations
                             Id = 63,
                             Brand = "Nike",
                             Category = "Running",
-                            ImageUrl = "/images/nike13.png",
+                            ImageUrl = "/images/nike12.png",
                             Name = "Nike Shoe 63",
                             Price = 4995.00m
                         },
@@ -655,7 +658,7 @@ namespace SoleHub.Migrations
                             Id = 64,
                             Brand = "Nike",
                             Category = "Running",
-                            ImageUrl = "/images/nike14.png",
+                            ImageUrl = "/images/nike13.png",
                             Name = "Nike Shoe 64",
                             Price = 5495.00m
                         },
@@ -664,17 +667,17 @@ namespace SoleHub.Migrations
                             Id = 65,
                             Brand = "Nike",
                             Category = "Running",
-                            ImageUrl = "/images/nike15.png",
+                            ImageUrl = "/images/nike14.png",
                             Name = "Nike Shoe 65",
                             Price = 5995.00m
                         },
                         new
                         {
                             Id = 66,
-                            Brand = "New Balance",
+                            Brand = "Nike",
                             Category = "Running",
-                            ImageUrl = "/images/nb1.png",
-                            Name = "New Balance Shoe 66",
+                            ImageUrl = "/images/nike15.png",
+                            Name = "Nike Shoe 66",
                             Price = 6495.00m
                         },
                         new
@@ -682,7 +685,7 @@ namespace SoleHub.Migrations
                             Id = 67,
                             Brand = "New Balance",
                             Category = "Running",
-                            ImageUrl = "/images/nb2.png",
+                            ImageUrl = "/images/nb.jpg",
                             Name = "New Balance Shoe 67",
                             Price = 6995.00m
                         },
@@ -691,7 +694,7 @@ namespace SoleHub.Migrations
                             Id = 68,
                             Brand = "New Balance",
                             Category = "Running",
-                            ImageUrl = "/images/nb3.png",
+                            ImageUrl = "/images/nb1.png",
                             Name = "New Balance Shoe 68",
                             Price = 7495.00m
                         },
@@ -700,7 +703,7 @@ namespace SoleHub.Migrations
                             Id = 69,
                             Brand = "New Balance",
                             Category = "Running",
-                            ImageUrl = "/images/nb4.png",
+                            ImageUrl = "/images/nb2.png",
                             Name = "New Balance Shoe 69",
                             Price = 7995.00m
                         },
@@ -709,7 +712,7 @@ namespace SoleHub.Migrations
                             Id = 70,
                             Brand = "New Balance",
                             Category = "Running",
-                            ImageUrl = "/images/nb5.png",
+                            ImageUrl = "/images/nb3.png",
                             Name = "New Balance Shoe 70",
                             Price = 8495.00m
                         },
@@ -718,7 +721,7 @@ namespace SoleHub.Migrations
                             Id = 71,
                             Brand = "New Balance",
                             Category = "Running",
-                            ImageUrl = "/images/nb6.png",
+                            ImageUrl = "/images/nb4.png",
                             Name = "New Balance Shoe 71",
                             Price = 8995.00m
                         },
@@ -727,7 +730,7 @@ namespace SoleHub.Migrations
                             Id = 72,
                             Brand = "New Balance",
                             Category = "Running",
-                            ImageUrl = "/images/nb7.png",
+                            ImageUrl = "/images/nb5.png",
                             Name = "New Balance Shoe 72",
                             Price = 9495.00m
                         },
@@ -736,377 +739,377 @@ namespace SoleHub.Migrations
                             Id = 73,
                             Brand = "New Balance",
                             Category = "Running",
-                            ImageUrl = "/images/nb202rbl.png",
+                            ImageUrl = "/images/nb6.png",
                             Name = "New Balance Shoe 73",
                             Price = 4995.00m
                         },
                         new
                         {
                             Id = 74,
-                            Brand = "Hoka",
+                            Brand = "New Balance",
                             Category = "Running",
-                            ImageUrl = "/images/hoka1.png",
-                            Name = "Hoka Shoe 74",
+                            ImageUrl = "/images/nb7.png",
+                            Name = "New Balance Shoe 74",
                             Price = 5495.00m
                         },
                         new
                         {
                             Id = 75,
-                            Brand = "Hoka",
+                            Brand = "New Balance",
                             Category = "Running",
-                            ImageUrl = "/images/hoka2.png",
-                            Name = "Hoka Shoe 75",
+                            ImageUrl = "/images/nb202rbl.png",
+                            Name = "New Balance Shoe 75",
                             Price = 5995.00m
                         },
                         new
                         {
                             Id = 76,
-                            Brand = "Hoka",
+                            Brand = "New Balance",
                             Category = "Running",
-                            ImageUrl = "/images/hoka5.png",
-                            Name = "Hoka Shoe 76",
+                            ImageUrl = "/images/nb530.jpg",
+                            Name = "New Balance Shoe 76",
                             Price = 6495.00m
                         },
                         new
                         {
                             Id = 77,
-                            Brand = "Vans",
-                            Category = "Skate",
-                            ImageUrl = "/images/vans1.png",
-                            Name = "Vans Shoe 77",
+                            Brand = "Hoka",
+                            Category = "Running",
+                            ImageUrl = "/images/hoka1.png",
+                            Name = "Hoka Shoe 77",
                             Price = 6995.00m
                         },
                         new
                         {
                             Id = 78,
-                            Brand = "Vans",
-                            Category = "Skate",
-                            ImageUrl = "/images/vans2.png",
-                            Name = "Vans Shoe 78",
+                            Brand = "Hoka",
+                            Category = "Running",
+                            ImageUrl = "/images/hoka2.png",
+                            Name = "Hoka Shoe 78",
                             Price = 7495.00m
                         },
                         new
                         {
                             Id = 79,
-                            Brand = "Vans",
-                            Category = "Skate",
-                            ImageUrl = "/images/vans3.png",
-                            Name = "Vans Shoe 79",
+                            Brand = "Hoka",
+                            Category = "Running",
+                            ImageUrl = "/images/hoka5.png",
+                            Name = "Hoka Shoe 79",
                             Price = 7995.00m
                         },
                         new
                         {
                             Id = 80,
-                            Brand = "SoleHub",
-                            Category = "Lifestyle",
-                            ImageUrl = "/images/c2.png",
-                            Name = "SoleHub Shoe 80",
+                            Brand = "Vans",
+                            Category = "Skate",
+                            ImageUrl = "/images/vans.jpg",
+                            Name = "Vans Shoe 80",
                             Price = 8495.00m
                         },
                         new
                         {
                             Id = 81,
-                            Brand = "SoleHub",
-                            Category = "Lifestyle",
-                            ImageUrl = "/images/c3.png",
-                            Name = "SoleHub Shoe 81",
+                            Brand = "Vans",
+                            Category = "Skate",
+                            ImageUrl = "/images/vans1.jpg",
+                            Name = "Vans Shoe 81",
                             Price = 8995.00m
                         },
                         new
                         {
                             Id = 82,
-                            Brand = "SoleHub",
-                            Category = "Lifestyle",
-                            ImageUrl = "/images/c4.png",
-                            Name = "SoleHub Shoe 82",
+                            Brand = "Vans",
+                            Category = "Skate",
+                            ImageUrl = "/images/vans2.jpg",
+                            Name = "Vans Shoe 82",
                             Price = 9495.00m
                         },
                         new
                         {
                             Id = 83,
-                            Brand = "SoleHub",
-                            Category = "Lifestyle",
-                            ImageUrl = "/images/c5.png",
-                            Name = "SoleHub Shoe 83",
+                            Brand = "Vans",
+                            Category = "Skate",
+                            ImageUrl = "/images/vans3.jpg",
+                            Name = "Vans Shoe 83",
                             Price = 4995.00m
                         },
                         new
                         {
                             Id = 84,
-                            Brand = "SoleHub",
-                            Category = "Lifestyle",
-                            ImageUrl = "/images/c6.png",
-                            Name = "SoleHub Shoe 84",
+                            Brand = "Adidas",
+                            Category = "Slides",
+                            ImageUrl = "/images/yeezy.jpg",
+                            Name = "Adidas Shoe 84",
                             Price = 5495.00m
                         },
                         new
                         {
                             Id = 85,
-                            Brand = "SoleHub",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/c7.png",
-                            Name = "SoleHub Shoe 85",
+                            ImageUrl = "/images/c1.jpg",
+                            Name = "Converse Shoe 85",
                             Price = 5995.00m
                         },
                         new
                         {
                             Id = 86,
-                            Brand = "SoleHub",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/c8.png",
-                            Name = "SoleHub Shoe 86",
+                            ImageUrl = "/images/c2.png",
+                            Name = "Converse Shoe 86",
                             Price = 6495.00m
                         },
                         new
                         {
                             Id = 87,
-                            Brand = "SoleHub",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/c9.png",
-                            Name = "SoleHub Shoe 87",
+                            ImageUrl = "/images/c3.png",
+                            Name = "Converse Shoe 87",
                             Price = 6995.00m
                         },
                         new
                         {
                             Id = 88,
-                            Brand = "SoleHub",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/c10.png",
-                            Name = "SoleHub Shoe 88",
+                            ImageUrl = "/images/c4.png",
+                            Name = "Converse Shoe 88",
                             Price = 7495.00m
                         },
                         new
                         {
                             Id = 89,
-                            Brand = "SoleHub",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/c11.png",
-                            Name = "SoleHub Shoe 89",
+                            ImageUrl = "/images/c5.png",
+                            Name = "Converse Shoe 89",
                             Price = 7995.00m
                         },
                         new
                         {
                             Id = 90,
-                            Brand = "SoleHub",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/c12.png",
-                            Name = "SoleHub Shoe 90",
+                            ImageUrl = "/images/c6.png",
+                            Name = "Converse Shoe 90",
                             Price = 8495.00m
                         },
                         new
                         {
                             Id = 91,
-                            Brand = "SoleHub",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/c13.png",
-                            Name = "SoleHub Shoe 91",
+                            ImageUrl = "/images/c7.png",
+                            Name = "Converse Shoe 91",
                             Price = 8995.00m
                         },
                         new
                         {
                             Id = 92,
-                            Brand = "SoleHub",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/c14.png",
-                            Name = "SoleHub Shoe 92",
+                            ImageUrl = "/images/c8.png",
+                            Name = "Converse Shoe 92",
                             Price = 9495.00m
                         },
                         new
                         {
                             Id = 93,
-                            Brand = "SoleHub",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/c15.png",
-                            Name = "SoleHub Shoe 93",
+                            ImageUrl = "/images/c9.png",
+                            Name = "Converse Shoe 93",
                             Price = 4995.00m
                         },
                         new
                         {
                             Id = 94,
-                            Brand = "SoleHub",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/c16.png",
-                            Name = "SoleHub Shoe 94",
+                            ImageUrl = "/images/c10.png",
+                            Name = "Converse Shoe 94",
                             Price = 5495.00m
                         },
                         new
                         {
                             Id = 95,
-                            Brand = "SoleHub",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/c17.png",
-                            Name = "SoleHub Shoe 95",
+                            ImageUrl = "/images/c11.png",
+                            Name = "Converse Shoe 95",
                             Price = 5995.00m
                         },
                         new
                         {
                             Id = 96,
-                            Brand = "SoleHub",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/c18.png",
-                            Name = "SoleHub Shoe 96",
+                            ImageUrl = "/images/c12.png",
+                            Name = "Converse Shoe 96",
                             Price = 6495.00m
                         },
                         new
                         {
                             Id = 97,
-                            Brand = "SoleHub",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/c19.png",
-                            Name = "SoleHub Shoe 97",
+                            ImageUrl = "/images/c13.png",
+                            Name = "Converse Shoe 97",
                             Price = 6995.00m
                         },
                         new
                         {
                             Id = 98,
-                            Brand = "SoleHub",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/c20.png",
-                            Name = "SoleHub Shoe 98",
+                            ImageUrl = "/images/c14.png",
+                            Name = "Converse Shoe 98",
                             Price = 7495.00m
                         },
                         new
                         {
                             Id = 99,
-                            Brand = "SoleHub",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/c21.png",
-                            Name = "SoleHub Shoe 99",
+                            ImageUrl = "/images/c15.png",
+                            Name = "Converse Shoe 99",
                             Price = 7995.00m
                         },
                         new
                         {
                             Id = 100,
-                            Brand = "SoleHub",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/c23.png",
-                            Name = "SoleHub Shoe 100",
+                            ImageUrl = "/images/c16.png",
+                            Name = "Converse Shoe 100",
                             Price = 8495.00m
                         },
                         new
                         {
                             Id = 101,
-                            Brand = "SoleHub",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/c24.png",
-                            Name = "SoleHub Shoe 101",
+                            ImageUrl = "/images/c17.png",
+                            Name = "Converse Shoe 101",
                             Price = 8995.00m
                         },
                         new
                         {
                             Id = 102,
-                            Brand = "SoleHub",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/c25.png",
-                            Name = "SoleHub Shoe 102",
+                            ImageUrl = "/images/c18.png",
+                            Name = "Converse Shoe 102",
                             Price = 9495.00m
                         },
                         new
                         {
                             Id = 103,
-                            Brand = "SoleHub",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/c26.png",
-                            Name = "SoleHub Shoe 103",
+                            ImageUrl = "/images/c19.png",
+                            Name = "Converse Shoe 103",
                             Price = 4995.00m
                         },
                         new
                         {
                             Id = 104,
-                            Brand = "SoleHub",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/c27.png",
-                            Name = "SoleHub Shoe 104",
+                            ImageUrl = "/images/c20.png",
+                            Name = "Converse Shoe 104",
                             Price = 5495.00m
                         },
                         new
                         {
                             Id = 105,
-                            Brand = "SoleHub",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/c28.png",
-                            Name = "SoleHub Shoe 105",
+                            ImageUrl = "/images/c21.png",
+                            Name = "Converse Shoe 105",
                             Price = 5995.00m
                         },
                         new
                         {
                             Id = 106,
-                            Brand = "SoleHub",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/c29.png",
-                            Name = "SoleHub Shoe 106",
+                            ImageUrl = "/images/c23.png",
+                            Name = "Converse Shoe 106",
                             Price = 6495.00m
                         },
                         new
                         {
                             Id = 107,
-                            Brand = "SoleHub",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/c30.png",
-                            Name = "SoleHub Shoe 107",
+                            ImageUrl = "/images/c24.png",
+                            Name = "Converse Shoe 107",
                             Price = 6995.00m
                         },
                         new
                         {
                             Id = 108,
-                            Brand = "Puma",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/p1.png",
-                            Name = "Puma Shoe 108",
+                            ImageUrl = "/images/c25.png",
+                            Name = "Converse Shoe 108",
                             Price = 7495.00m
                         },
                         new
                         {
                             Id = 109,
-                            Brand = "Puma",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/p2.png",
-                            Name = "Puma Shoe 109",
+                            ImageUrl = "/images/c26.png",
+                            Name = "Converse Shoe 109",
                             Price = 7995.00m
                         },
                         new
                         {
                             Id = 110,
-                            Brand = "Puma",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/p3.png",
-                            Name = "Puma Shoe 110",
+                            ImageUrl = "/images/c27.png",
+                            Name = "Converse Shoe 110",
                             Price = 8495.00m
                         },
                         new
                         {
                             Id = 111,
-                            Brand = "Puma",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/p4.png",
-                            Name = "Puma Shoe 111",
+                            ImageUrl = "/images/c28.png",
+                            Name = "Converse Shoe 111",
                             Price = 8995.00m
                         },
                         new
                         {
                             Id = 112,
-                            Brand = "Puma",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/p5.png",
-                            Name = "Puma Shoe 112",
+                            ImageUrl = "/images/c29.png",
+                            Name = "Converse Shoe 112",
                             Price = 9495.00m
                         },
                         new
                         {
                             Id = 113,
-                            Brand = "Puma",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/p6.png",
-                            Name = "Puma Shoe 113",
+                            ImageUrl = "/images/c30.png",
+                            Name = "Converse Shoe 113",
                             Price = 4995.00m
                         },
                         new
                         {
                             Id = 114,
-                            Brand = "Puma",
+                            Brand = "Converse",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/p7.png",
-                            Name = "Puma Shoe 114",
+                            ImageUrl = "/images/cr1.jpg",
+                            Name = "Converse Shoe 114",
                             Price = 5495.00m
                         },
                         new
@@ -1114,7 +1117,7 @@ namespace SoleHub.Migrations
                             Id = 115,
                             Brand = "Puma",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/p8.png",
+                            ImageUrl = "/images/p1.png",
                             Name = "Puma Shoe 115",
                             Price = 5995.00m
                         },
@@ -1123,7 +1126,7 @@ namespace SoleHub.Migrations
                             Id = 116,
                             Brand = "Puma",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/p9.png",
+                            ImageUrl = "/images/p2.png",
                             Name = "Puma Shoe 116",
                             Price = 6495.00m
                         },
@@ -1132,7 +1135,7 @@ namespace SoleHub.Migrations
                             Id = 117,
                             Brand = "Puma",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/p10.png",
+                            ImageUrl = "/images/p3.png",
                             Name = "Puma Shoe 117",
                             Price = 6995.00m
                         },
@@ -1141,7 +1144,7 @@ namespace SoleHub.Migrations
                             Id = 118,
                             Brand = "Puma",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/p11.png",
+                            ImageUrl = "/images/p4.png",
                             Name = "Puma Shoe 118",
                             Price = 7495.00m
                         },
@@ -1150,7 +1153,7 @@ namespace SoleHub.Migrations
                             Id = 119,
                             Brand = "Puma",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/p12.png",
+                            ImageUrl = "/images/p5.png",
                             Name = "Puma Shoe 119",
                             Price = 7995.00m
                         },
@@ -1159,7 +1162,7 @@ namespace SoleHub.Migrations
                             Id = 120,
                             Brand = "Puma",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/p13.png",
+                            ImageUrl = "/images/p6.png",
                             Name = "Puma Shoe 120",
                             Price = 8495.00m
                         },
@@ -1168,7 +1171,7 @@ namespace SoleHub.Migrations
                             Id = 121,
                             Brand = "Puma",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/p14.png",
+                            ImageUrl = "/images/p7.png",
                             Name = "Puma Shoe 121",
                             Price = 8995.00m
                         },
@@ -1177,7 +1180,7 @@ namespace SoleHub.Migrations
                             Id = 122,
                             Brand = "Puma",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/p15.png",
+                            ImageUrl = "/images/p8.png",
                             Name = "Puma Shoe 122",
                             Price = 9495.00m
                         },
@@ -1186,7 +1189,7 @@ namespace SoleHub.Migrations
                             Id = 123,
                             Brand = "Puma",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/p16.png",
+                            ImageUrl = "/images/p9.png",
                             Name = "Puma Shoe 123",
                             Price = 4995.00m
                         },
@@ -1195,7 +1198,7 @@ namespace SoleHub.Migrations
                             Id = 124,
                             Brand = "Puma",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/p17.png",
+                            ImageUrl = "/images/p10.png",
                             Name = "Puma Shoe 124",
                             Price = 5495.00m
                         },
@@ -1204,7 +1207,7 @@ namespace SoleHub.Migrations
                             Id = 125,
                             Brand = "Puma",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/p18.png",
+                            ImageUrl = "/images/p11.png",
                             Name = "Puma Shoe 125",
                             Price = 5995.00m
                         },
@@ -1213,7 +1216,7 @@ namespace SoleHub.Migrations
                             Id = 126,
                             Brand = "Puma",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/p19.png",
+                            ImageUrl = "/images/p12.png",
                             Name = "Puma Shoe 126",
                             Price = 6495.00m
                         },
@@ -1222,7 +1225,7 @@ namespace SoleHub.Migrations
                             Id = 127,
                             Brand = "Puma",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/p20.png",
+                            ImageUrl = "/images/p13.png",
                             Name = "Puma Shoe 127",
                             Price = 6995.00m
                         },
@@ -1231,7 +1234,7 @@ namespace SoleHub.Migrations
                             Id = 128,
                             Brand = "Puma",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/p21.png",
+                            ImageUrl = "/images/p14.png",
                             Name = "Puma Shoe 128",
                             Price = 7495.00m
                         },
@@ -1240,7 +1243,7 @@ namespace SoleHub.Migrations
                             Id = 129,
                             Brand = "Puma",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/p22.png",
+                            ImageUrl = "/images/p15.png",
                             Name = "Puma Shoe 129",
                             Price = 7995.00m
                         },
@@ -1249,7 +1252,7 @@ namespace SoleHub.Migrations
                             Id = 130,
                             Brand = "Puma",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/p23.png",
+                            ImageUrl = "/images/p16.png",
                             Name = "Puma Shoe 130",
                             Price = 8495.00m
                         },
@@ -1258,7 +1261,7 @@ namespace SoleHub.Migrations
                             Id = 131,
                             Brand = "Puma",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/p24.png",
+                            ImageUrl = "/images/p17.png",
                             Name = "Puma Shoe 131",
                             Price = 8995.00m
                         },
@@ -1267,71 +1270,71 @@ namespace SoleHub.Migrations
                             Id = 132,
                             Brand = "Puma",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/p25.png",
+                            ImageUrl = "/images/p18.png",
                             Name = "Puma Shoe 132",
                             Price = 9495.00m
                         },
                         new
                         {
                             Id = 133,
-                            Brand = "Reebok",
-                            Category = "Running",
-                            ImageUrl = "/images/r1.png",
-                            Name = "Reebok Shoe 133",
+                            Brand = "Puma",
+                            Category = "Lifestyle",
+                            ImageUrl = "/images/p19.png",
+                            Name = "Puma Shoe 133",
                             Price = 4995.00m
                         },
                         new
                         {
                             Id = 134,
-                            Brand = "Reebok",
-                            Category = "Running",
-                            ImageUrl = "/images/r2.png",
-                            Name = "Reebok Shoe 134",
+                            Brand = "Puma",
+                            Category = "Lifestyle",
+                            ImageUrl = "/images/p20.png",
+                            Name = "Puma Shoe 134",
                             Price = 5495.00m
                         },
                         new
                         {
                             Id = 135,
-                            Brand = "Reebok",
-                            Category = "Running",
-                            ImageUrl = "/images/r4.png",
-                            Name = "Reebok Shoe 135",
+                            Brand = "Puma",
+                            Category = "Lifestyle",
+                            ImageUrl = "/images/p21.png",
+                            Name = "Puma Shoe 135",
                             Price = 5995.00m
                         },
                         new
                         {
                             Id = 136,
-                            Brand = "Reebok",
-                            Category = "Running",
-                            ImageUrl = "/images/r5.png",
-                            Name = "Reebok Shoe 136",
+                            Brand = "Puma",
+                            Category = "Lifestyle",
+                            ImageUrl = "/images/p22.png",
+                            Name = "Puma Shoe 136",
                             Price = 6495.00m
                         },
                         new
                         {
                             Id = 137,
-                            Brand = "Reebok",
-                            Category = "Running",
-                            ImageUrl = "/images/r6.png",
-                            Name = "Reebok Shoe 137",
+                            Brand = "Puma",
+                            Category = "Lifestyle",
+                            ImageUrl = "/images/p23.png",
+                            Name = "Puma Shoe 137",
                             Price = 6995.00m
                         },
                         new
                         {
                             Id = 138,
-                            Brand = "Reebok",
-                            Category = "Running",
-                            ImageUrl = "/images/r7.png",
-                            Name = "Reebok Shoe 138",
+                            Brand = "Puma",
+                            Category = "Lifestyle",
+                            ImageUrl = "/images/p24.png",
+                            Name = "Puma Shoe 138",
                             Price = 7495.00m
                         },
                         new
                         {
                             Id = 139,
-                            Brand = "Reebok",
-                            Category = "Running",
-                            ImageUrl = "/images/r8.png",
-                            Name = "Reebok Shoe 139",
+                            Brand = "Puma",
+                            Category = "Lifestyle",
+                            ImageUrl = "/images/p25.png",
+                            Name = "Puma Shoe 139",
                             Price = 7995.00m
                         },
                         new
@@ -1339,7 +1342,7 @@ namespace SoleHub.Migrations
                             Id = 140,
                             Brand = "Reebok",
                             Category = "Running",
-                            ImageUrl = "/images/r9.png",
+                            ImageUrl = "/images/r1.jpg",
                             Name = "Reebok Shoe 140",
                             Price = 8495.00m
                         },
@@ -1348,7 +1351,7 @@ namespace SoleHub.Migrations
                             Id = 141,
                             Brand = "Reebok",
                             Category = "Running",
-                            ImageUrl = "/images/r10.png",
+                            ImageUrl = "/images/r1.png",
                             Name = "Reebok Shoe 141",
                             Price = 8995.00m
                         },
@@ -1357,7 +1360,7 @@ namespace SoleHub.Migrations
                             Id = 142,
                             Brand = "Reebok",
                             Category = "Running",
-                            ImageUrl = "/images/r11.png",
+                            ImageUrl = "/images/r2.png",
                             Name = "Reebok Shoe 142",
                             Price = 9495.00m
                         },
@@ -1366,7 +1369,7 @@ namespace SoleHub.Migrations
                             Id = 143,
                             Brand = "Reebok",
                             Category = "Running",
-                            ImageUrl = "/images/r12.png",
+                            ImageUrl = "/images/r4.png",
                             Name = "Reebok Shoe 143",
                             Price = 4995.00m
                         },
@@ -1375,7 +1378,7 @@ namespace SoleHub.Migrations
                             Id = 144,
                             Brand = "Reebok",
                             Category = "Running",
-                            ImageUrl = "/images/r13.png",
+                            ImageUrl = "/images/r5.png",
                             Name = "Reebok Shoe 144",
                             Price = 5495.00m
                         },
@@ -1384,7 +1387,7 @@ namespace SoleHub.Migrations
                             Id = 145,
                             Brand = "Reebok",
                             Category = "Running",
-                            ImageUrl = "/images/r14.png",
+                            ImageUrl = "/images/r6.png",
                             Name = "Reebok Shoe 145",
                             Price = 5995.00m
                         },
@@ -1393,7 +1396,7 @@ namespace SoleHub.Migrations
                             Id = 146,
                             Brand = "Reebok",
                             Category = "Running",
-                            ImageUrl = "/images/r15.png",
+                            ImageUrl = "/images/r7.png",
                             Name = "Reebok Shoe 146",
                             Price = 6495.00m
                         },
@@ -1402,7 +1405,7 @@ namespace SoleHub.Migrations
                             Id = 147,
                             Brand = "Reebok",
                             Category = "Running",
-                            ImageUrl = "/images/r16.png",
+                            ImageUrl = "/images/r8.png",
                             Name = "Reebok Shoe 147",
                             Price = 6995.00m
                         },
@@ -1411,80 +1414,80 @@ namespace SoleHub.Migrations
                             Id = 148,
                             Brand = "Reebok",
                             Category = "Running",
-                            ImageUrl = "/images/r17.png",
+                            ImageUrl = "/images/r9.png",
                             Name = "Reebok Shoe 148",
                             Price = 7495.00m
                         },
                         new
                         {
                             Id = 149,
-                            Brand = "Skechers",
-                            Category = "Lifestyle",
-                            ImageUrl = "/images/s1.png",
-                            Name = "Skechers Shoe 149",
+                            Brand = "Reebok",
+                            Category = "Running",
+                            ImageUrl = "/images/r10.png",
+                            Name = "Reebok Shoe 149",
                             Price = 7995.00m
                         },
                         new
                         {
                             Id = 150,
-                            Brand = "Skechers",
-                            Category = "Lifestyle",
-                            ImageUrl = "/images/s2.png",
-                            Name = "Skechers Shoe 150",
+                            Brand = "Reebok",
+                            Category = "Running",
+                            ImageUrl = "/images/r11.png",
+                            Name = "Reebok Shoe 150",
                             Price = 8495.00m
                         },
                         new
                         {
                             Id = 151,
-                            Brand = "Skechers",
-                            Category = "Lifestyle",
-                            ImageUrl = "/images/s3.png",
-                            Name = "Skechers Shoe 151",
+                            Brand = "Reebok",
+                            Category = "Running",
+                            ImageUrl = "/images/r12.png",
+                            Name = "Reebok Shoe 151",
                             Price = 8995.00m
                         },
                         new
                         {
                             Id = 152,
-                            Brand = "Skechers",
-                            Category = "Lifestyle",
-                            ImageUrl = "/images/s4.png",
-                            Name = "Skechers Shoe 152",
+                            Brand = "Reebok",
+                            Category = "Running",
+                            ImageUrl = "/images/r13.png",
+                            Name = "Reebok Shoe 152",
                             Price = 9495.00m
                         },
                         new
                         {
                             Id = 153,
-                            Brand = "Skechers",
-                            Category = "Lifestyle",
-                            ImageUrl = "/images/s5.png",
-                            Name = "Skechers Shoe 153",
+                            Brand = "Reebok",
+                            Category = "Running",
+                            ImageUrl = "/images/r14.png",
+                            Name = "Reebok Shoe 153",
                             Price = 4995.00m
                         },
                         new
                         {
                             Id = 154,
-                            Brand = "Skechers",
-                            Category = "Lifestyle",
-                            ImageUrl = "/images/s6.png",
-                            Name = "Skechers Shoe 154",
+                            Brand = "Reebok",
+                            Category = "Running",
+                            ImageUrl = "/images/r15.png",
+                            Name = "Reebok Shoe 154",
                             Price = 5495.00m
                         },
                         new
                         {
                             Id = 155,
-                            Brand = "Skechers",
-                            Category = "Lifestyle",
-                            ImageUrl = "/images/s7.png",
-                            Name = "Skechers Shoe 155",
+                            Brand = "Reebok",
+                            Category = "Running",
+                            ImageUrl = "/images/r16.png",
+                            Name = "Reebok Shoe 155",
                             Price = 5995.00m
                         },
                         new
                         {
                             Id = 156,
-                            Brand = "Skechers",
-                            Category = "Lifestyle",
-                            ImageUrl = "/images/s8.png",
-                            Name = "Skechers Shoe 156",
+                            Brand = "Reebok",
+                            Category = "Running",
+                            ImageUrl = "/images/r17.png",
+                            Name = "Reebok Shoe 156",
                             Price = 6495.00m
                         },
                         new
@@ -1492,9 +1495,81 @@ namespace SoleHub.Migrations
                             Id = 157,
                             Brand = "Skechers",
                             Category = "Lifestyle",
-                            ImageUrl = "/images/s9.png",
+                            ImageUrl = "/images/s1.png",
                             Name = "Skechers Shoe 157",
                             Price = 6995.00m
+                        },
+                        new
+                        {
+                            Id = 158,
+                            Brand = "Skechers",
+                            Category = "Lifestyle",
+                            ImageUrl = "/images/s2.png",
+                            Name = "Skechers Shoe 158",
+                            Price = 7495.00m
+                        },
+                        new
+                        {
+                            Id = 159,
+                            Brand = "Skechers",
+                            Category = "Lifestyle",
+                            ImageUrl = "/images/s3.png",
+                            Name = "Skechers Shoe 159",
+                            Price = 7995.00m
+                        },
+                        new
+                        {
+                            Id = 160,
+                            Brand = "Skechers",
+                            Category = "Lifestyle",
+                            ImageUrl = "/images/s4.png",
+                            Name = "Skechers Shoe 160",
+                            Price = 8495.00m
+                        },
+                        new
+                        {
+                            Id = 161,
+                            Brand = "Skechers",
+                            Category = "Lifestyle",
+                            ImageUrl = "/images/s5.png",
+                            Name = "Skechers Shoe 161",
+                            Price = 8995.00m
+                        },
+                        new
+                        {
+                            Id = 162,
+                            Brand = "Skechers",
+                            Category = "Lifestyle",
+                            ImageUrl = "/images/s6.png",
+                            Name = "Skechers Shoe 162",
+                            Price = 9495.00m
+                        },
+                        new
+                        {
+                            Id = 163,
+                            Brand = "Skechers",
+                            Category = "Lifestyle",
+                            ImageUrl = "/images/s7.png",
+                            Name = "Skechers Shoe 163",
+                            Price = 4995.00m
+                        },
+                        new
+                        {
+                            Id = 164,
+                            Brand = "Skechers",
+                            Category = "Lifestyle",
+                            ImageUrl = "/images/s8.png",
+                            Name = "Skechers Shoe 164",
+                            Price = 5495.00m
+                        },
+                        new
+                        {
+                            Id = 165,
+                            Brand = "Skechers",
+                            Category = "Lifestyle",
+                            ImageUrl = "/images/s9.png",
+                            Name = "Skechers Shoe 165",
+                            Price = 5995.00m
                         });
                 });
 
@@ -1592,31 +1667,6 @@ namespace SoleHub.Migrations
                         });
                 });
 
-            modelBuilder.Entity("SoleHub.Models.WishlistItem", b =>
-                {
-                    b.Property<int>("WishlistItemId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WishlistItemId"));
-
-                    b.Property<DateTime>("AddedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("WishlistItemId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("WishlistItems");
-                });
-
             modelBuilder.Entity("SoleHub.Models.CartItem", b =>
                 {
                     b.HasOne("SoleHub.Models.Product", "Product")
@@ -1656,17 +1706,6 @@ namespace SoleHub.Migrations
                         .IsRequired();
 
                     b.Navigation("Order");
-                });
-
-            modelBuilder.Entity("SoleHub.Models.WishlistItem", b =>
-                {
-                    b.HasOne("SoleHub.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("SoleHub.Models.Order", b =>

@@ -1,8 +1,74 @@
-﻿@model IEnumerable<Product>
+﻿@model IEnumerable<SoleHub.Models.Product>
 
 @{
     ViewData["Title"] = "Sneakers";
 }
+
+@Html.AntiForgeryToken()
+
+<style>
+    body {
+        background-color: #050505;
+        color: #ffffff;
+    }
+
+    .search-form {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 50px;
+        padding: 5px 5px 5px 20px;
+        display: flex;
+        align-items: center;
+        backdrop-filter: blur(10px);
+    }
+
+    .search-input {
+        background: transparent !important;
+        border: none !important;
+        color: white !important;
+        box-shadow: none !important;
+    }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+    .store-benefits {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .benefit-item {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        padding: 2rem;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+    }
+
+        .benefit-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+    .benefit-icon {
+        font-size: 1.8rem;
+        color: #ffffff;
+    }
+
+    .custom-alert-dark {
+        background: rgba(255, 255, 255, 0.05);
+        border-left: 4px solid #4caf50;
+        color: #fff;
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+    }
+</style>
 
 <section class="hero-section">
     <div class="hero-content">
@@ -12,9 +78,9 @@
             Premium sneakers, running shoes, and slides for every step of your journey.
         </p>
 
-        <a asp-controller="Product" asp-action="Index" class="btn btn-light hero-button">
+        <a asp-controller="Product" asp-action="Index" class="btn btn-light hero-button px-5 py-3 fw-bold rounded-pill">
             Shop Now
-            <i class="bi bi-arrow-right ms-1"></i>
+            <i class="bi bi-arrow-right ms-2"></i>
         </a>
     </div>
 
@@ -23,38 +89,28 @@
     </div>
 </section>
 
-<section class="container-fluid px-4 mt-4">
-    <div class="store-toolbar">
-        <div>
-            <h2 class="section-title">Featured Sneakers</h2>
-            <p class="section-subtitle">
-                Browse rubber shoes, running shoes, slides, and lifestyle sneakers.
-            </p>
+<section class="container-fluid px-4 mt-5">
+    <div class="store-toolbar d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div class="mb-3 mb-md-0">
+            <h2 class="section-title text-uppercase fw-bold mb-0">Featured Sneakers</h2>
         </div>
 
-        <form asp-controller="Product" asp-action="Index" method="get" class="search-form">
-            <i class="bi bi-search search-icon"></i>
-
-            <input type="text"
-                   name="searchString"
-                   value="@ViewData["CurrentFilter"]"
-                   class="form-control search-input"
-                   placeholder="Search sneakers..." />
-
-            <button type="submit" class="btn btn-dark search-button">
-                Search
-            </button>
+        <form asp-controller="Product" asp-action="Index" method="get" class="search-form" style="min-width: 320px;">
+            <i class="bi bi-search text-white-50"></i>
+            <input type="text" name="searchString" value="@ViewData["CurrentFilter"]"
+                   class="form-control search-input" placeholder="Search sneakers..." />
+            <button type="submit" class="btn btn-light rounded-pill px-4 fw-bold">Search</button>
         </form>
     </div>
 
     @if (TempData["Message"] != null)
     {
-        <div class="alert alert-success rounded-4 shadow-sm">
-            @TempData["Message"]
+        <div class="alert custom-alert-dark shadow-lg mb-4 p-3">
+            <i class="bi bi-check2-circle me-2 text-success"></i> @TempData["Message"]
         </div>
     }
 
-    <div class="category-pills mb-4">
+    <div class="category-pills mb-5">
         <a asp-controller="Product" asp-action="Index" class="category-pill">All</a>
         <a asp-controller="Product" asp-action="Index" asp-route-category="Running" class="category-pill">Running</a>
         <a asp-controller="Product" asp-action="Index" asp-route-category="Slides" class="category-pill">Slides</a>
@@ -66,36 +122,34 @@
         @foreach (var item in Model)
         {
             <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
-                <div class="product-card">
+                <div class="product-card card-matte-black shadow-lg border-0">
+                    <div class="product-image-box">
+                        <button class="wishlist-btn-matte" data-product-id="@item.Id">
+                            <i class="bi bi-heart"></i>
+                        </button>
 
-                    <a asp-controller="Product"
-                       asp-action="Details"
-                       asp-route-id="@item.Id"
-                       class="product-image-box">
-                        <img src="@item.ImageUrl" alt="@item.Name" class="product-image" asp-append-version="true" />
-                    </a>
+                        <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">
+                            <img src="@item.ImageUrl" alt="@item.Name" class="product-image-floating" />
+                        </a>
+                    </div>
 
-                    <div class="product-info">
-                        <span class="product-brand">@item.Brand</span>
+                    <div class="product-info p-4">
+                        <span class="product-brand text-uppercase small text-white-50">@item.Brand</span>
+                        <h5 class="product-name text-white fw-bold mb-1">@item.Name</h5>
+                        <p class="product-category text-white-50 small">@item.Category</p>
 
-                        <h5 class="product-name">@item.Name</h5>
-
-                        <p class="product-category">@item.Category</p>
-
-                        <div class="rating-row">
-                            <span class="stars">★★★★★</span>
-                            <span class="rating-text">(4.5)</span>
+                        <div class="rating-row mb-3">
+                            <span class="stars text-warning">★★★★★</span>
+                            <span class="rating-text text-white ms-1 small">4.5</span>
                         </div>
 
-                        <div class="product-bottom">
-                            <strong class="product-price">₱@item.Price.ToString("N2")</strong>
-
-                            <a asp-controller="Product"
-                               asp-action="Details"
-                               asp-route-id="@item.Id"
-                               class="btn btn-dark add-cart-btn">
-                                Add to Cart
-                               
+                        <div class="product-bottom d-flex align-items-center justify-content-between pt-2">
+                            <span class="product-price fw-bold h5 mb-0 text-white">
+                                ₱@item.Price.ToString("N2")
+                            </span>
+                            <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id"
+                               class="btn btn-light btn-solehub-sm px-4 py-2 fw-bold">
+                                ADD TO CART
                             </a>
                         </div>
                     </div>
@@ -105,206 +159,126 @@
     </div>
 </section>
 
-<section class="container-fluid px-4 mt-5">
+<section class="container-fluid px-4 mt-5 pt-5">
     <div class="store-benefits">
         <div class="benefit-item">
-            <div class="benefit-icon">
-                <i class="bi bi-truck"></i>
-            </div>
-
+            <div class="benefit-icon"><i class="bi bi-truck"></i></div>
             <div>
-                <h5>Free Shipping</h5>
-                <p>Free delivery for orders over ₱3,000.</p>
+                <h5 class="fw-bold mb-1">Free Shipping</h5>
+                <p class="text-white-50 mb-0 small">On all orders above ₱3,000.</p>
             </div>
         </div>
-
         <div class="benefit-item">
-            <div class="benefit-icon">
-                <i class="bi bi-cash-coin"></i>
-            </div>
-
+            <div class="benefit-icon"><i class="bi bi-shield-check"></i></div>
             <div>
-                <h5>COD / GCash</h5>
-                <p>Pay using Cash on Delivery, GCash, or card.</p>
+                <h5 class="fw-bold mb-1">Secure Payment</h5>
+                <p class="text-white-50 mb-0 small">COD, GCash, or Credit Card.</p>
             </div>
         </div>
-
         <div class="benefit-item">
-            <div class="benefit-icon">
-                <i class="bi bi-arrow-repeat"></i>
-            </div>
-
+            <div class="benefit-icon"><i class="bi bi-arrow-repeat"></i></div>
             <div>
-                <h5>Easy Returns</h5>
-                <p>Request returns for wrong size or damaged items.</p>
-            </div>
-        </div>
-
-        <div class="benefit-item">
-            <div class="benefit-icon">
-                <i class="bi bi-shield-check"></i>
-            </div>
-
-            <div>
-                <h5>Trusted Store</h5>
-                <p>Quality footwear from popular sneaker brands.</p>
+                <h5 class="fw-bold mb-1">Quick Returns</h5>
+                <p class="text-white-50 mb-0 small">Easy 7-day return policy.</p>
             </div>
         </div>
     </div>
 </section>
 
 <section class="container-fluid px-4 mt-5">
-    <div class="section-heading-row">
-        <div>
-            <h2 class="section-title">Shop by Category</h2>
-            <p class="section-subtitle">
-                Find the perfect pair based on your style and activity.
-            </p>
-        </div>
+    <div class="mb-4">
+        <h2 class="fw-bold text-uppercase">Shop by Category</h2>
+        <p class="text-white-50">Find the perfect pair for your lifestyle.</p>
     </div>
 
-    <div class="row g-4 mt-1">
+    <div class="row g-4">
         <div class="col-md-3 col-sm-6">
-            <a asp-controller="Product" asp-action="Index" asp-route-category="Running" class="category-card category-running">
+            <a asp-controller="Product" asp-action="Index" asp-route-category="Running"
+               class="category-card category-running">
                 <span>Running</span>
                 <small>Lightweight shoes for daily runs.</small>
-                <i class="bi bi-arrow-right"></i>
+                <i class="bi bi-arrow-right-circle h3 mb-0"></i>
             </a>
         </div>
 
         <div class="col-md-3 col-sm-6">
-            <a asp-controller="Product" asp-action="Index" asp-route-category="Slides" class="category-card category-slides">
+            <a asp-controller="Product" asp-action="Index" asp-route-category="Slides"
+               class="category-card category-slides">
                 <span>Slides</span>
                 <small>Comfortable footwear for casual use.</small>
-                <i class="bi bi-arrow-right"></i>
+                <i class="bi bi-arrow-right-circle h3 mb-0"></i>
             </a>
         </div>
 
         <div class="col-md-3 col-sm-6">
-            <a asp-controller="Product" asp-action="Index" asp-route-category="Lifestyle" class="category-card category-lifestyle">
+            <a asp-controller="Product" asp-action="Index" asp-route-category="Lifestyle"
+               class="category-card category-lifestyle">
                 <span>Lifestyle</span>
                 <small>Everyday sneakers for clean outfits.</small>
-                <i class="bi bi-arrow-right"></i>
+                <i class="bi bi-arrow-right-circle h3 mb-0"></i>
             </a>
         </div>
 
         <div class="col-md-3 col-sm-6">
-            <a asp-controller="Product" asp-action="Index" asp-route-category="Skate" class="category-card category-skate">
+            <a asp-controller="Product" asp-action="Index" asp-route-category="Skate"
+               class="category-card category-skate">
                 <span>Skate</span>
                 <small>Durable pairs for streetwear looks.</small>
-                <i class="bi bi-arrow-right"></i>
+                <i class="bi bi-arrow-right-circle h3 mb-0"></i>
             </a>
         </div>
     </div>
 </section>
 
-<section class="container-fluid px-4 mt-5">
+<section class="container-fluid px-4 mt-5 pb-5">
     <div class="row g-4">
-        <div class="col-lg-5">
-            <div class="promo-panel">
+        <div class="col-lg-12">
+            <div class="promo-panel p-5 rounded-5 shadow-lg"
+                 style="background: linear-gradient(135deg, #111, #000); border: 1px solid rgba(255,255,255,0.05);">
                 <p class="hero-eyebrow">SOLEHUB STUDENT DEAL</p>
-
-                <h2>Upgrade your rotation without breaking the budget.</h2>
-
-                <p>
-                    SoleHub helps students browse sneakers, compare prices, manage accounts,
-                    checkout orders, and track purchase history in one simple MVC system.
-                </p>
-
-                <a asp-controller="Cart" asp-action="Index" class="btn btn-light hero-button">
-                    View Cart
-                    <i class="bi bi-arrow-right ms-1"></i>
-                </a>
-            </div>
-        </div>
-
-        <div class="col-lg-7">
-            <div class="how-it-works-card">
-                <h3>How SoleHub Works</h3>
-
-                <div class="step-list">
-                    <div class="step-item">
-                        <div class="step-number">1</div>
-
-                        <div>
-                            <h5>Search Products</h5>
-                            <p>Use the search bar to find shoes by name, brand, or category.</p>
-                        </div>
-                    </div>
-
-                    <div class="step-item">
-                        <div class="step-number">2</div>
-
-                        <div>
-                            <h5>Add to Cart</h5>
-                            <p>Select your preferred sneaker and add it to your shopping cart.</p>
-                        </div>
-                    </div>
-
-                    <div class="step-item">
-                        <div class="step-number">3</div>
-
-                        <div>
-                            <h5>Checkout</h5>
-                            <p>Enter your PH shipping address, courier, contact number, and payment method.</p>
-                        </div>
-                    </div>
-
-                    <div class="step-item">
-                        <div class="step-number">4</div>
-
-                        <div>
-                            <h5>Track Orders</h5>
-                            <p>View completed orders and purchase details in Order History.</p>
-                        </div>
-                    </div>
-                </div>
+                <h2 class="display-5 fw-bold mb-4">
+                    Upgrade your rotation<br />without breaking the budget.
+                </h2>
             </div>
         </div>
     </div>
 </section>
 
-<section class="container-fluid px-4 mt-5 mb-5">
-    <div class="section-heading-row">
-        <div>
-            <h2 class="section-title">Final Project Features</h2>
-            <p class="section-subtitle">
-                These sections match the required interaction and UI/UX features for SoleHub.
-            </p>
-        </div>
-    </div>
+@section Scripts {
+    <script>
+        document.querySelectorAll('.wishlist-btn-matte').forEach(btn => {
+            btn.addEventListener('click', async function () {
+                const productId = this.dataset.productId;
+                const icon = this.querySelector('i');
 
-    <div class="row g-4 mt-1">
-        <div class="col-md-3 col-sm-6">
-            <div class="project-feature-card">
-                <i class="bi bi-search"></i>
-                <h5>Search Bar</h5>
-                <p>Search products by shoe name, brand, or category.</p>
-            </div>
-        </div>
+                try {
+                    const response = await fetch('/Wishlist/Toggle?id=' + productId, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value ?? ''
+                        }
+                    });
 
-        <div class="col-md-3 col-sm-6">
-            <div class="project-feature-card">
-                <i class="bi bi-person-circle"></i>
-                <h5>Account Management</h5>
-                <p>Users can update profile information and upload a profile picture.</p>
-            </div>
-        </div>
+                    const data = await response.json();
 
-        <div class="col-md-3 col-sm-6">
-            <div class="project-feature-card">
-                <i class="bi bi-cart-check"></i>
-                <h5>Cart and Checkout</h5>
-                <p>Customers can add products to cart and complete checkout.</p>
-            </div>
-        </div>
-
-        <div class="col-md-3 col-sm-6">
-            <div class="project-feature-card">
-                <i class="bi bi-clock-history"></i>
-                <h5>Order History</h5>
-                <p>Customers and admin can view order records from the database.</p>
-            </div>
-        </div>
-    </div>
-</section>
+                    if (data.success) {
+                        if (data.isWishlisted) {
+                            icon.classList.remove('bi-heart');
+                            icon.classList.add('bi-heart-fill');
+                            icon.style.color = '#ff4b2b';
+                        } else {
+                            icon.classList.remove('bi-heart-fill');
+                            icon.classList.add('bi-heart');
+                            icon.style.color = '';
+                        }
+                    } else {
+                        window.location.href = '/Auth/Login';
+                    }
+                } catch (err) {
+                    console.error('Wishlist error:', err);
+                }
+            });
+        });
+    </script>
+}

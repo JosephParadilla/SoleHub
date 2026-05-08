@@ -1,0 +1,199 @@
+﻿@model IEnumerable<SoleHub.Models.WishlistItem>
+
+@{
+    ViewData["Title"] = "My Wishlist";
+}
+
+<style>
+    /* Premium Dark Hero Section */
+    .wishlist-hero {
+        background: radial-gradient(circle at top right, #1a1a1a, #050505);
+        color: white;
+        padding: 80px 0 50px;
+        margin-bottom: 40px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+        .wishlist-hero h1 {
+            font-size: 3rem;
+            letter-spacing: -0.03em;
+        }
+
+    /* Glassmorphism Clear Button */
+    .clear-history-btn {
+        background: rgba(255, 255, 255, 0.03);
+        color: rgba(255, 255, 255, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 10px 20px;
+        border-radius: 12px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+        .clear-history-btn:hover {
+            background: #ff4d4d;
+            color: white;
+            border-color: #ff4d4d;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 77, 77, 0.2);
+        }
+
+    /* The Matte Black Card */
+    .card-matte-black {
+        background: #111;
+        border-radius: 32px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border: 1px solid rgba(255,255,255,0.03);
+        height: 100%;
+        position: relative;
+    }
+
+        .card-matte-black:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            border-color: rgba(255,255,255,0.1);
+        }
+
+    /* Spotlight Background for Images */
+    .product-image-box {
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 30%, transparent 70%);
+        height: 240px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 10px;
+        border-radius: 24px;
+        overflow: hidden;
+    }
+
+    .product-image-floating {
+        max-height: 180px;
+        width: auto;
+        object-fit: contain;
+        mix-blend-mode: lighten; /* Blends white image BGs into the dark card */
+        filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+        transition: 0.5s ease;
+    }
+
+    .card-matte-black:hover .product-image-floating {
+        transform: scale(1.15) rotate(-5deg);
+    }
+
+    /* Remove Heart Button */
+    .btn-remove-wishlist {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 10;
+        background: rgba(255,255,255,0.1);
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        color: #ff4d4d;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(8px);
+        transition: 0.3s;
+    }
+
+        .btn-remove-wishlist:hover {
+            background: #ff4d4d;
+            color: white;
+        }
+
+    .badge-count {
+        background: #fff;
+        color: #000;
+        font-size: 0.35em;
+        padding: 0.5em 0.8em;
+        border-radius: 8px;
+        vertical-align: middle;
+    }
+
+    body {
+        background-color: #050505;
+    }
+</style>
+
+<div class="wishlist-hero">
+    <div class="container d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="fw-black mb-1">My Wishlist <span class="badge-count">@Model.Count()</span></h1>
+            <p class="text-secondary opacity-75 mb-0">Your personal selection of premium footwear.</p>
+        </div>
+
+        @if (Model.Any())
+        {
+            <form asp-action="ClearHistory" method="post">
+                <button type="submit" class="clear-history-btn" onclick="return confirm('Remove all items from your wishlist?')">
+                    <i class="bi bi-trash3-fill me-2"></i>Clear History
+                </button>
+            </form>
+        }
+    </div>
+</div>
+
+<div class="container pb-5">
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5">
+            <div class="mb-4">
+                <i class="bi bi-heartbreak text-secondary opacity-25" style="font-size: 6rem;"></i>
+            </div>
+            <h2 class="text-white fw-bold">Your wishlist is empty</h2>
+            <p class="text-secondary mb-4">Looks like you haven't found your perfect pair yet.</p>
+            <a class="btn btn-light btn-lg rounded-pill px-5 fw-bold" asp-controller="Product" asp-action="Index">
+                Explore Sneakers
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var item in Model)
+            {
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div class="card-matte-black shadow-lg">
+
+                        <form asp-action="Remove" asp-route-id="@item.WishlistItemId" method="post">
+                            <button type="submit" class="btn-remove-wishlist" title="Remove">
+                                <i class="bi bi-heart-fill"></i>
+                            </button>
+                        </form>
+
+                        <div class="product-image-box">
+                            <a asp-controller="Product" asp-action="Details" asp-route-id="@item.ProductId">
+                                <img src="@item.Product?.ImageUrl" class="product-image-floating" alt="@item.Product?.Name" />
+                            </a>
+                        </div>
+
+                        <div class="p-4 pt-2">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <span class="text-uppercase text-secondary fw-bold" style="font-size: 0.65rem; letter-spacing: 1px;">
+                                        @item.Product?.Brand
+                                    </span>
+                                    <h5 class="text-white fw-bold mb-0">@item.Product?.Name</h5>
+                                </div>
+                            </div>
+
+                            <p class="text-secondary small mb-4">@item.Product?.Category</p>
+
+                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                <span class="fs-5 text-white fw-black">₱@item.Product?.Price.ToString("N2")</span>
+                                <a asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@item.ProductId"
+                                   class="btn btn-white btn-sm rounded-pill px-3 py-2 fw-bold shadow-sm">
+                                    <i class="bi bi-cart-plus me-1"></i> Add to Cart
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

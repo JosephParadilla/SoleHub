@@ -7,6 +7,10 @@
     --accent: #f5b301;
     --success-bg: #d7f5df;
     --success-text: #18863a;
+    --matte-black: #111111;
+    --matte-gradient: linear-gradient(145deg, #1e1e1e, #111111);
+    --text-sub: rgba(255, 255, 255, 0.5);
+    --spotlight: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
 }
 
 * {
@@ -223,27 +227,99 @@ body {
         box-shadow: 0 18px 40px rgba(0,0,0,0.09);
     }
 
+.card-matte-black {
+    background: var(--matte-gradient);
+    border-radius: 32px;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+    .card-matte-black:hover::before {
+        content: "";
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 200px;
+        height: 200px;
+        background: radial-gradient(circle, var(--matte-accent) 0%, transparent 70%);
+        z-index: 0;
+    }
+
+    .card-matte-black:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 30px 70px rgba(0, 0, 0, 0.7);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
 .product-image-box {
-    height: 260px;
-    background: #fff !important;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.2) 40%, transparent 70%) !important;
+    height: 240px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 28px;
-    text-decoration: none;
+    position: relative;
+}
+
+.card-matte-black:hover .product-image-floating {
+    transform: scale(1.1) rotate(-4deg);
+}
+
+.product-image-floating {
+    mix-blend-mode: multiply;
+    filter: brightness(1.05);
+    transition: transform 0.4s ease;
+}
+
+.text-light-gray {
+    color: var(--text-sub) !important;
+}
+
+.wishlist-btn-matte {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+    .wishlist-btn-matte:hover {
+        background: #fff;
+        color: #ff4d4d;
+    }
+
+.btn-solehub-sm {
+    border-radius: 12px;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
 }
 
 .product-image {
     width: 100%;
-    height: 220px;
+    height: auto;
+    max-height: 200px;
     object-fit: contain;
     display: block;
-    transition: 0.3s ease;
-    mix-blend-mode: multiply;
+    transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    mix-blend-mode: normal;
+    filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.7));
 }
 
-.product-card:hover .product-image {
-    transform: scale(1.08) rotate(-2deg);
+.card-matte-black:hover .product-image {
+    transform: scale(1.1) rotate(-4deg);
 }
 
 .product-info {
@@ -302,6 +378,60 @@ body {
 }
 
 /* =========================
+   Benefits Section
+   (Dark override for homepage)
+========================= */
+
+.store-benefits {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+    gap: 1.5rem !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+.benefit-item {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 20px !important;
+    padding: 2rem !important;
+    transition: all 0.3s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 1.2rem !important;
+}
+
+    .benefit-item:hover {
+        background: rgba(255, 255, 255, 0.06) !important;
+        transform: translateY(-5px) !important;
+        border-color: rgba(255, 255, 255, 0.2) !important;
+    }
+
+.benefit-icon {
+    font-size: 1.8rem !important;
+    color: #ffffff !important;
+    background: transparent !important;
+    width: auto !important;
+    height: auto !important;
+    border-radius: 0 !important;
+    flex-shrink: 0;
+}
+
+.benefit-item h5 {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    margin-bottom: 4px !important;
+}
+
+.benefit-item p {
+    color: rgba(255, 255, 255, 0.5) !important;
+    margin-bottom: 0 !important;
+    font-size: 0.92rem !important;
+}
+
+/* =========================
    Product Details Page
 ========================= */
 
@@ -338,11 +468,11 @@ body {
 .product-detail-panel {
     background: #fff;
     border: 1px solid var(--card-border);
-    border-radius: 24px;
-    padding: 28px;
+    border-radius: 28px;
+    padding: 32px;
     position: sticky;
-    top: 20px;
-    box-shadow: 0 10px 28px rgba(0,0,0,0.04);
+    top: 100px;
+    box-shadow: 0 15px 45px rgba(0,0,0,0.06);
 }
 
 .breadcrumb-text {
@@ -363,8 +493,10 @@ body {
 
 .product-detail-panel h1 {
     font-weight: 900;
-    font-size: 2rem;
-    margin-bottom: 4px;
+    font-size: 2.2rem;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
 }
 
 .detail-brand {
@@ -386,14 +518,35 @@ body {
     }
 
 .detail-price {
+    font-size: 1.75rem;
     font-weight: 900;
-    margin-bottom: 14px;
+    color: #111;
+    margin: 20px 0;
 }
 
 .detail-color {
     color: var(--muted);
     margin-bottom: 24px;
 }
+
+.detail-action-btn {
+    background: #111;
+    color: #fff;
+    width: 100%;
+    padding: 18px;
+    border-radius: 14px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: none;
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+    .detail-action-btn:hover {
+        background: #222;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
 
 /* =========================
    Size Picker
@@ -702,49 +855,8 @@ body {
 }
 
 /* =========================
-   Homepage Extra Sections
+   Category Cards
 ========================= */
-
-.store-benefits {
-    background: #fff;
-    border: 1px solid var(--card-border);
-    border-radius: 24px;
-    padding: 26px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 22px;
-    box-shadow: 0 10px 28px rgba(0,0,0,0.04);
-}
-
-.benefit-item {
-    display: flex;
-    gap: 14px;
-    align-items: flex-start;
-}
-
-.benefit-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 16px;
-    background: #111;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.35rem;
-    flex-shrink: 0;
-}
-
-.benefit-item h5 {
-    font-weight: 900;
-    margin-bottom: 4px;
-}
-
-.benefit-item p {
-    color: var(--muted);
-    margin-bottom: 0;
-    font-size: 0.92rem;
-}
 
 .section-heading-row {
     display: flex;
@@ -754,71 +866,170 @@ body {
 }
 
 .category-card {
-    min-height: 190px;
-    border-radius: 24px;
-    padding: 24px;
-    color: #fff;
-    text-decoration: none;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    height: 350px;
+    padding: 2rem;
+    text-decoration: none;
+    border-radius: 20px;
     position: relative;
     overflow: hidden;
-    transition: 0.25s ease;
-    background: #111;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-size: cover;
+    background-position: center;
+    color: white !important;
 }
 
     .category-card::before {
         content: "";
         position: absolute;
-        inset: 0;
-        background: radial-gradient(circle at top right, rgba(255,255,255,0.2), transparent 35%);
-    }
-
-    .category-card:hover {
-        transform: translateY(-6px);
-        color: #fff;
-        box-shadow: 0 18px 40px rgba(0,0,0,0.16);
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 60%);
+        z-index: 1;
     }
 
     .category-card span {
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-transform: uppercase;
         position: relative;
         z-index: 1;
-        font-size: 1.55rem;
-        font-weight: 900;
     }
 
     .category-card small {
+        opacity: 0.8;
+        margin-bottom: 10px;
+        display: block;
         position: relative;
         z-index: 1;
-        color: rgba(255,255,255,0.78);
-        margin-top: 6px;
-        max-width: 210px;
     }
 
     .category-card i {
-        position: absolute;
-        right: 22px;
-        top: 22px;
-        font-size: 1.5rem;
+        font-size: 1.2rem;
+        transition: transform 0.3s ease;
+        position: relative;
         z-index: 1;
     }
 
+    .category-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 18px 40px rgba(0,0,0,0.3);
+    }
+
+        .category-card:hover i {
+            transform: translateX(10px);
+        }
+
 .category-running {
-    background: linear-gradient(135deg, #111, #2f3c4d);
+    background-image: url('/images/RunningPoster.png');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    border: none;
 }
+
+    .category-running::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 50%);
+        z-index: 0;
+    }
+
+    .category-running span,
+    .category-running small,
+    .category-running i {
+        z-index: 1;
+    }
 
 .category-slides {
-    background: linear-gradient(135deg, #111, #66503b);
+    background-image: url('/images/SlidesPoster.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
+
+    .category-slides::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 40%, transparent 100%);
+        z-index: 0;
+    }
+
+    .category-slides span,
+    .category-slides small,
+    .category-slides i {
+        position: relative;
+        z-index: 1;
+    }
 
 .category-lifestyle {
-    background: linear-gradient(135deg, #111, #3f4f3d);
+    background-image: url('/images/LifestylePoster.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 
+    .category-lifestyle::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 40%, transparent 100%);
+        z-index: 0;
+    }
+
+    .category-lifestyle span,
+    .category-lifestyle small,
+    .category-lifestyle i {
+        position: relative;
+        z-index: 1;
+    }
+
 .category-skate {
-    background: linear-gradient(135deg, #111, #473f5c);
+    background-image: url('/images/SkatePoster.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
+
+    .category-skate::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 40%, transparent 100%);
+        z-index: 0;
+    }
+
+    .category-skate span,
+    .category-skate small,
+    .category-skate i {
+        position: relative;
+        z-index: 1;
+    }
+
+/* =========================
+   Promo Panel
+========================= */
 
 .promo-panel {
     min-height: 100%;
@@ -943,6 +1154,39 @@ body {
 }
 
 /* =========================
+   Wishlist Button (Light pages)
+========================= */
+
+.wishlist-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+    background: #fff;
+    border: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    color: #111;
+    transition: 0.25s ease;
+    cursor: pointer;
+}
+
+    .wishlist-btn:hover {
+        transform: scale(1.1);
+        color: #ff4d4d;
+    }
+
+    .wishlist-btn i {
+        font-size: 1.1rem;
+        line-height: 0;
+    }
+
+/* =========================
    Responsive
 ========================= */
 
@@ -991,11 +1235,19 @@ body {
     }
 
     .gallery-main {
-        min-height: 280px;
+        background: #f8f9fa;
+        border-radius: 24px;
+        border: 1px solid #f0f0f0;
+        overflow: hidden;
+        transition: 0.3s ease;
     }
 
+        .gallery-main:hover img {
+            transform: scale(1.05);
+        }
+
     .store-benefits {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr) !important;
     }
 
     .section-heading-row {
@@ -1022,7 +1274,7 @@ body {
     }
 
     .store-benefits {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
     }
 
     .promo-panel {

@@ -2,108 +2,159 @@
 
 @{
     ViewData["Title"] = "My Cart";
-
-    decimal subtotal = 0;
-
-    if (Model != null)
-    {
-        subtotal = Model.Sum(item => item.LineTotal);
-    }
+    decimal subtotal = Model?.Sum(item => item.LineTotal) ?? 0;
 }
 
-<section class="container py-5">
-    <div class="page-heading">
-        <h1>My Cart</h1>
-        <p>Review your selected SoleHub items.</p>
-    </div>
+<style>
+    body {
+        background-color: #050505;
+        color: white;
+    }
 
+    /* Hero Section */
+    .cart-hero {
+        background: radial-gradient(circle at top left, #1a1a1a, #050505);
+        padding: 80px 0 50px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        margin-bottom: 40px;
+    }
+
+    /* Premium Item Cards */
+    .cart-item-premium {
+        background: #111;
+        border: 1px solid rgba(255,255,255,0.03);
+        border-radius: 24px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+
+        .cart-item-premium:hover {
+            border-color: rgba(255,255,255,0.1);
+        }
+
+    .img-container {
+        background: #1a1a1a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        width: 180px;
+    }
+
+        .img-container img {
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+            transition: transform 0.5s ease;
+        }
+
+    .cart-item-premium:hover .img-container img {
+        transform: scale(1.1) rotate(-5deg);
+    }
+
+    /* Form Elements */
+    .qty-select {
+        background: #1a1a1a !important;
+        border: 1px solid rgba(255,255,255,0.1) !important;
+        color: white !important;
+        border-radius: 10px;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+
+    /* Summary Card (Glassmorphism) */
+    .summary-card-premium {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 32px;
+        padding: 40px;
+        position: sticky;
+        top: 100px;
+    }
+
+    .btn-checkout {
+        background: white;
+        color: black;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-radius: 15px;
+        padding: 18px;
+        transition: 0.3s;
+    }
+
+        .btn-checkout:hover {
+            background: #e0e0e0;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255,255,255,0.1);
+        }
+</style>
+
+<div class="cart-hero">
+    <div class="container">
+        <h1 class="fw-black mb-1 text-uppercase">Shopping Bag</h1>
+        <p class="text-secondary opacity-75">You have @(Model?.Count ?? 0) items in your cart.</p>
+    </div>
+</div>
+
+<section class="container pb-5">
     @if (TempData["Message"] != null)
     {
-        <div class="alert alert-info rounded-4">
-            @TempData["Message"]
+        <div class="alert alert-dark border-0 shadow-sm rounded-4 py-3 mb-4">
+            <i class="bi bi-info-circle me-2 text-info"></i> @TempData["Message"]
         </div>
     }
 
     @if (Model == null || Model.Count == 0)
     {
-        <div class="empty-state">
-            <i class="bi bi-cart-x"></i>
-
-            <h3>Your cart is empty.</h3>
-
-            <p>Start shopping and add your favorite sneakers.</p>
-
-            <a asp-controller="Product"
-               asp-action="Index"
-               class="btn btn-dark">
-                Continue Shopping
-            </a>
+        <div class="text-center py-5">
+            <i class="bi bi-cart-x opacity-10 mb-4" style="font-size: 6rem;"></i>
+            <h2 class="fw-bold">Your bag is empty</h2>
+            <p class="text-secondary mb-4">Looks like you haven't added any heat to your cart yet.</p>
+            <a asp-controller="Product" asp-action="Index" class="btn btn-outline-light rounded-pill px-5">Start Shopping</a>
         </div>
     }
     else
     {
-        <div class="row g-4">
+        <div class="row g-5">
             <div class="col-lg-8">
-                <div class="cart-list">
+                <div class="d-flex flex-column gap-4">
                     @foreach (var item in Model)
                     {
-                        <div class="cart-item">
-                            <img src="@item.ImageUrl" alt="@item.Name" />
-
-                            <div class="cart-item-info">
-                                <span>@item.Brand</span>
-
-                                <h5>@item.Name</h5>
-
-                                <p>Size: @item.Size</p>
-                                <form asp-controller="Cart"
-                                      asp-action="UpdateQuantity"
-                                      method="post"
-                                      class="mt-2">
-
-                                    <input type="hidden"
-                                           name="cartItemId"
-                                           value="@item.Id" />
-
-                                    <label class="small fw-semibold">
-                                        Quantity
-                                    </label>
-
-                                    <select name="quantity"
-                                            class="form-select form-select-sm"
-                                            style="width: 90px;"
-                                            onchange="this.form.submit()">
-
-                                        @for (int qty = 1; qty <= 10; qty++)
-                                        {
-                                            if (qty == item.Quantity)
-                                            {
-                                                <option value="@qty" selected>
-                                                    @qty
-                                                </option>
-                                            }
-                                            else
-                                            {
-                                                <option value="@qty">
-                                                    @qty
-                                                </option>
-                                            }
-                                        }
-
-                                    </select>
-
-                                </form>
+                        <div class="cart-item-premium d-flex align-items-stretch">
+                            <div class="img-container">
+                                <img src="@item.ImageUrl" alt="@item.Name" class="img-fluid" />
                             </div>
 
-                            <div class="cart-item-price">
-                                <strong>₱@item.LineTotal.ToString("N2")</strong>
+                            <div class="flex-grow-1 p-4 d-flex flex-column justify-content-between">
+                                <div>
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <span class="text-secondary small fw-bold text-uppercase tracking-wider">@item.Brand</span>
+                                            <h4 class="fw-bold mb-1">@item.Name</h4>
+                                            <span class="badge bg-dark border border-secondary border-opacity-25 rounded-pill px-3">Size: @item.Size</span>
+                                        </div>
+                                        <div class="text-end">
+                                            <h4 class="fw-black mb-0">₱@item.LineTotal.ToString("N2")</h4>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                <a asp-controller="Cart"
-                                   asp-action="Remove"
-                                   asp-route-id="@item.ProductId"
-                                   class="btn btn-sm btn-outline-danger mt-2">
-                                    Remove
-                                </a>
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <form asp-controller="Cart" asp-action="UpdateQuantity" method="post" class="d-flex align-items-center gap-3">
+                                        <input type="hidden" name="cartItemId" value="@item.Id" />
+                                        <span class="small text-secondary fw-bold text-uppercase">Quantity</span>
+                                        <select name="quantity" class="qty-select shadow-none" onchange="this.form.submit()">
+                                            @for (int qty = 1; qty <= 10; qty++)
+                                            {
+                                                <option value="@qty" selected="@(qty == item.Quantity)">@qty</option>
+                                            }
+                                        </select>
+                                    </form>
+
+                                    <a asp-controller="Cart" asp-action="Remove" asp-route-id="@item.ProductId" class="text-danger small text-decoration-none fw-bold">
+                                        <i class="bi bi-trash3 me-1"></i> REMOVE
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     }
@@ -111,36 +162,35 @@
             </div>
 
             <div class="col-lg-4">
-                <div class="summary-card">
-                    <h4>Order Summary</h4>
+                <div class="summary-card-premium shadow-lg">
+                    <h3 class="fw-black mb-4">Summary</h3>
 
-                    <div class="summary-line">
-                        <span>Subtotal</span>
-                        <strong>₱@subtotal.ToString("N2")</strong>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="text-secondary fw-bold text-uppercase small">Subtotal</span>
+                        <span class="fw-bold">₱@subtotal.ToString("N2")</span>
                     </div>
 
-                    <div class="summary-line">
-                        <span>Shipping</span>
-                        <strong>FREE</strong>
+                    <div class="d-flex justify-content-between mb-4">
+                        <span class="text-secondary fw-bold text-uppercase small">Estimated Shipping</span>
+                        <span class="text-success fw-bold">FREE</span>
                     </div>
 
-                    <hr />
-
-                    <div class="summary-line total-line">
-                        <span>Total</span>
-                        <strong>₱@subtotal.ToString("N2")</strong>
+                    <div class="border-top border-secondary border-opacity-25 pt-4 mb-4">
+                        <div class="d-flex justify-content-between align-items-end">
+                            <span class="fw-bold fs-5">TOTAL</span>
+                            <div class="text-end">
+                                <h2 class="fw-black mb-0">₱@subtotal.ToString("N2")</h2>
+                                <span class="small text-secondary">(VAT Included)</span>
+                            </div>
+                        </div>
                     </div>
 
-                    <a asp-controller="Cart"
-                       asp-action="Checkout"
-                       class="btn btn-dark w-100 mt-3">
-                        Checkout Securely
+                    <a asp-controller="Cart" asp-action="Checkout" class="btn btn-checkout w-100 mb-3">
+                        Checkout Now <i class="bi bi-arrow-right ms-2"></i>
                     </a>
 
-                    <a asp-controller="Cart"
-                       asp-action="Clear"
-                       class="btn btn-outline-secondary w-100 mt-2">
-                        Clear Cart
+                    <a asp-controller="Cart" asp-action="Clear" class="btn btn-link w-100 text-secondary text-decoration-none small" onclick="return confirm('Empty your cart?')">
+                        Clear Shopping Bag
                     </a>
                 </div>
             </div>

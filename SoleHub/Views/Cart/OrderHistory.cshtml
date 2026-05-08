@@ -6,235 +6,206 @@
     string role = Context.Session.GetString("Role") ?? "";
 }
 
-<section class="container py-5">
+<style>
+    body {
+        background-color: #050505;
+        color: white;
+    }
 
-    <div class="page-heading">
-        <h1>Order History</h1>
+    /* Hero Section */
+    .history-hero {
+        background: radial-gradient(circle at bottom right, #1a1a1a, #050505);
+        padding: 80px 0 50px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        margin-bottom: 40px;
+    }
 
-        @if (role == "Admin")
-        {
-            <p>Admin view: all customer orders.</p>
+    /* Order Card Styling */
+    .order-card-premium {
+        background: #111;
+        border: 1px solid rgba(255,255,255,0.03);
+        border-radius: 24px;
+        padding: 30px;
+        margin-bottom: 30px;
+        transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+        .order-card-premium:hover {
+            border-color: rgba(255,255,255,0.1);
+            transform: translateY(-5px);
         }
-        else
+
+    /* Status Badges */
+    .status-pill {
+        padding: 6px 16px;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .status-processing {
+        background: #fff;
+        color: #000;
+    }
+
+    .status-cancelled {
+        background: rgba(255, 68, 68, 0.1);
+        color: #ff4444;
+        border: 1px solid rgba(255, 68, 68, 0.2);
+    }
+
+    .status-completed {
+        background: rgba(0, 255, 127, 0.1);
+        color: #00ff7f;
+        border: 1px solid rgba(0, 255, 127, 0.2);
+    }
+
+    /* Table Customization */
+    .table-dark-premium {
+        --bs-table-bg: transparent;
+        --bs-table-color: rgba(255,255,255,0.7);
+        border-color: rgba(255,255,255,0.05);
+        margin-top: 20px;
+    }
+
+        .table-dark-premium thead th {
+            color: rgba(255,255,255,0.3);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+    /* Empty State */
+    .empty-state-container {
+        padding: 100px 0;
+        text-align: center;
+        background: #111;
+        border-radius: 32px;
+        border: 1px dashed rgba(255,255,255,0.1);
+    }
+
+    .empty-icon {
+        font-size: 4rem;
+        color: rgba(255,255,255,0.05);
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="history-hero">
+    <div class="container d-flex justify-content-between align-items-end">
+        <div>
+            <h1 class="fw-black mb-1">Order History</h1>
+            <p class="text-secondary opacity-75">
+                @(role == "Admin" ? "Admin Management: Global Customer Orders" : "Track and manage your premium purchases.")
+            </p>
+        </div>
+
+        @if (Model?.Count > 0)
         {
-            <p>Track your previous SoleHub purchases.</p>
+            <form asp-action="ClearOrderHistory" method="post">
+                <button type="submit" class="btn btn-outline-danger rounded-pill px-4" onclick="return confirm('Clear all history?')">
+                    <i class="bi bi-trash3 me-2"></i> Clear History
+                </button>
+            </form>
         }
     </div>
+</div>
 
-    @if (Model != null && Model.Count > 0)
-    {
-        <div class="mb-4">
-
-            <form asp-action="ClearOrderHistory" method="post">
-
-                <button type="submit"
-                        class="btn btn-outline-danger rounded-pill"
-                        onclick="return confirm('Clear all order history?')">
-
-                    <i class="bi bi-trash"></i>
-                    Clear Order History
-
-                </button>
-
-            </form>
-
-        </div>
-    }
-
+<section class="container pb-5">
     @if (TempData["Success"] != null)
     {
-        <div class="alert alert-success rounded-4">
-            @TempData["Success"]
-        </div>
-    }
-
-    @if (TempData["Error"] != null)
-    {
-        <div class="alert alert-danger rounded-4">
-            @TempData["Error"]
-        </div>
+        <div class="alert alert-success bg-success border-0 text-white rounded-4 mb-4">@TempData["Success"]</div>
     }
 
     @if (Model == null || Model.Count == 0)
     {
-        <div class="empty-state">
-
-            <i class="bi bi-clock-history"></i>
-
-            <h3>No orders yet.</h3>
-
-            <p>Checkout your cart to create your first order.</p>
-
-            <a asp-controller="Product"
-               asp-action="Index"
-               class="btn btn-dark">
-                Shop Now
-            </a>
-
+        <div class="empty-state-container shadow-lg">
+            <div class="empty-icon"><i class="bi bi-box-seam"></i></div>
+            <h3 class="fw-bold">No orders found</h3>
+            <p class="text-secondary mb-4">Ready to step into your style?</p>
+            <a asp-controller="Product" asp-action="Index" class="btn btn-light rounded-pill px-5 py-2 fw-bold">Shop Now</a>
         </div>
     }
     else
     {
-        <div class="order-list">
-
-            @foreach (var order in Model)
-            {
-                <div class="order-card">
-
-                    <div class="order-header">
-
-                        <div>
-                            <h4>@order.OrderNumber</h4>
-
-                            <p>
-                                @order.OrderDate.ToString("MMMM dd, yyyy hh:mm tt")
-                            </p>
-                        </div>
-
-                        <div class="d-flex align-items-center gap-2">
-
-                            <span class="order-status @(order.Status.ToLower())">
-                                @order.Status
-                            </span>
-
-                            @if (order.Status == "Processing")
-                            {
-                                <form asp-action="CancelOrder" method="post">
-
-                                    <input type="hidden"
-                                           name="id"
-                                           value="@order.Id" />
-
-                                    <button type="submit"
-                                            class="btn btn-sm btn-danger rounded-pill"
-                                            onclick="return confirm('Cancel this order?')">
-
-                                        Cancel
-
-                                    </button>
-
-                                </form>
-                            }
-
-                        </div>
-
-                    </div>
-
-                    <div class="mb-3">
-
-                        <strong>Customer:</strong> @order.CustomerName <br />
-
-                        <strong>Contact:</strong> @order.ContactNumber <br />
-
-                        <strong>Email:</strong> @order.Email <br />
-
-                        <strong>Courier:</strong> @order.Courier <br />
-
-                        <strong>Address:</strong> @order.FullAddress <br />
-
-                        <strong>Payment:</strong> @order.PaymentMethod
-
-                    </div>
-
-                    <div class="table-responsive">
-
-                        <table class="table align-middle">
-
-                            <thead>
-                                <tr>
-                                    <th>Item</th>
-                                    <th>Brand</th>
-                                    <th>Size</th>
-                                    <th>Qty</th>
-                                    <th>Price</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-
-                                @foreach (var item in order.Items)
-                                {
-                                    <tr>
-
-                                        <td>@item.ProductName</td>
-
-                                        <td>@item.Brand</td>
-
-                                        <td>@item.Size</td>
-
-                                        <td>@item.Quantity</td>
-
-                                        <td>
-                                            ₱@item.Price.ToString("N2")
-                                        </td>
-
-                                        <td>
-                                            ₱@item.LineTotal.ToString("N2")
-                                        </td>
-
-                                    </tr>
-                                }
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-                <div class="order-footer">
-
+        @foreach (var order in Model)
+        {
+            <div class="order-card-premium shadow-lg">
+                <div class="d-flex justify-content-between align-items-start mb-4">
                     <div>
-
-                        <strong>Subtotal:</strong>
-                        ₱@order.Subtotal.ToString("N2")
-
-                        <br />
-
-                        <strong>Shipping:</strong>
-
-                        @(order.ShippingFee == 0
-                                            ? "FREE"
-                                            : "₱" + order.ShippingFee.ToString("N2"))
-
-                </div>
-
-                        <h5>
-                            Total: ₱@order.Total.ToString("N2")
-                        </h5>
-
+                        <span class="text-secondary small text-uppercase fw-bold opacity-50">Order Number</span>
+                        <h4 class="fw-black mb-0">#@order.OrderNumber</h4>
+                        <span class="text-secondary small">@order.OrderDate.ToString("MMM dd, yyyy • hh:mm tt")</span>
                     </div>
 
+                    <div class="text-end">
+                        <div class="mb-2">
+                            <span class="status-pill status-@(order.Status.ToLower())">@order.Status</span>
+                        </div>
+                        @if (order.Status == "Processing")
+                        {
+                            <form asp-action="CancelOrder" method="post">
+                                <input type="hidden" name="id" value="@order.Id" />
+                                <button type="submit" class="btn btn-link text-danger text-decoration-none small p-0" onclick="return confirm('Cancel this order?')">
+                                    Cancel Order
+                                </button>
+                            </form>
+                        }
+                    </div>
                 </div>
-                }
 
-        </div>
+                <div class="row g-4 mb-4">
+                    <div class="col-md-3">
+                        <label class="form-label small text-uppercase opacity-50 d-block">Customer</label>
+                        <span class="fw-bold">@order.CustomerName</span>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small text-uppercase opacity-50 d-block">Courier</label>
+                        <span>@order.Courier</span>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label small text-uppercase opacity-50 d-block">Shipping Address</label>
+                        <span class="small text-secondary">@order.FullAddress</span>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-dark-premium align-middle">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Size</th>
+                                <th>Qty</th>
+                                <th class="text-end">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in order.Items)
+                            {
+                                <tr>
+                                    <td class="fw-bold text-white">@item.ProductName <span class="d-block small text-secondary fw-normal">@item.Brand</span></td>
+                                    <td>@item.Size</td>
+                                    <td>×@item.Quantity</td>
+                                    <td class="text-end fw-bold text-white">₱@item.LineTotal.ToString("N2")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mt-4 pt-4 border-top border-secondary border-opacity-10">
+                    <div class="text-secondary small">
+                        Payment: <span class="text-white">@order.PaymentMethod</span> |
+                        Shipping: <span class="text-white">@(order.ShippingFee == 0 ? "FREE" : "₱" + order.ShippingFee.ToString("N2"))</span>
+                    </div>
+                    <div class="text-end">
+                        <span class="text-secondary small text-uppercase d-block">Grand Total</span>
+                        <h3 class="fw-black mb-0">₱@order.Total.ToString("N2")</h3>
+                    </div>
+                </div>
+            </div>
+        }
     }
-
 </section>
-
-<style>
-
-    .order-status {
-        padding: 6px 14px;
-        border-radius: 999px;
-        font-weight: 600;
-        font-size: 14px;
-    }
-
-        .order-status.processing {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .order-status.cancelled {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        .order-status.completed {
-            background: #dbeafe;
-            color: #1e3a8a;
-        }
-
-</style>

@@ -17,9 +17,9 @@
     .site-footer {
         width: 100%;
         padding: 20px 0;
-        text-align: center; /* Simplest way to center text horizontally */
-        background-color: transparent; /* Or #ffffff to match your design */
-        color: #6c757d; /* Muted color to match your Login page footer */
+        text-align: center; 
+        background-color: transparent; 
+        color: #6c757d; 
         font-size: 0.85rem;
     }
 </style>
@@ -165,7 +165,7 @@
                         {
                             <span class="nav-icon-link">
                                 <i class="bi bi-person-circle"></i>
-                                @role: @username
+                                @fullName
                             </span>
 
                             <a class="nav-icon-link"
@@ -180,6 +180,13 @@
                                asp-action="OrderHistory">
                                 <i class="bi bi-bag-check"></i>
                                 Orders
+                            </a>
+
+                            <a class="nav-icon-link"
+                               asp-controller="Wishlist"
+                               asp-action="Index">
+                                <i class="bi bi-heart"></i>
+                                Wishlist
                             </a>
 
                             <a class="nav-icon-link"

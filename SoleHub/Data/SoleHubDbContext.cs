@@ -10,6 +10,7 @@ namespace SoleHub.Data
         {
         }
 
+        public DbSet<WishlistItem> WishlistItems { get; set; }
         public DbSet<Product> Products => Set<Product>();
 
         public DbSet<UserProfile> UserProfiles => Set<UserProfile>();
@@ -111,26 +112,24 @@ namespace SoleHub.Data
                 "ad22.png", "ad23.png", "ad24.png", "ad25.png", "ad26.png", "ad27.png", "ad28.png", "ad29.png", "ad30.png",
                 "ad31.png", "ad32.png", "ad33.png", "ad34.png", "ad35.png", "ad36.png",
 
-                "nike1.jpg", "nike2.png", "nike3.png", "nike4.png", "nike5.png", "nike6.png", "nike7.png", "nike8.png",
+                "nike2.png", "nike3.png", "nike4.png", "nike5.png", "nike6.png", "nike7.png", "nike8.png",
                 "nike9.png", "nike10.png", "nike11.png", "nike12.png", "nike13.png", "nike14.png", "nike15.png",
 
-                "nb.jpg", "nb1.png", "nb2.png", "nb3.png", "nb4.png", "nb5.png", "nb6.png", "nb7.png", "nb202rbl.png", "nb530.jpg",
+                "nb1.png", "nb2.png", "nb3.png", "nb4.png", "nb5.png", "nb6.png", "nb7.png", "nb202rbl.png",
 
                 "hoka1.png", "hoka2.png", "hoka5.png",
 
-                "vans.jpg", "yeezy.jpg",
+                "vans1.png", "vans2.png", "vans3.png",
 
-                "c1.jpg", "c2.png", "c3.png", "c4.png", "c5.png", "c6.png", "c7.png", "c8.png", "c9.png", "c10.png",
+                "c2.png", "c3.png", "c4.png", "c5.png", "c6.png", "c7.png", "c8.png", "c9.png", "c10.png",
                 "c11.png", "c12.png", "c13.png", "c14.png", "c15.png", "c16.png", "c17.png", "c18.png", "c19.png", "c20.png",
                 "c21.png", "c23.png", "c24.png", "c25.png", "c26.png", "c27.png", "c28.png", "c29.png", "c30.png",
-
-                "cr1.jpg",
 
                 "p1.png", "p2.png", "p3.png", "p4.png", "p5.png", "p6.png", "p7.png", "p8.png", "p9.png", "p10.png",
                 "p11.png", "p12.png", "p13.png", "p14.png", "p15.png", "p16.png", "p17.png", "p18.png", "p19.png", "p20.png",
                 "p21.png", "p22.png", "p23.png", "p24.png", "p25.png",
 
-                "r1.jpg", "r1.png", "r2.png", "r4.png", "r5.png", "r6.png", "r7.png", "r8.png", "r9.png", "r10.png",
+                "r1.png", "r2.png", "r4.png", "r5.png", "r6.png", "r7.png", "r8.png", "r9.png", "r10.png",
                 "r11.png", "r12.png", "r13.png", "r14.png", "r15.png", "r16.png", "r17.png",
 
                 "s1.png", "s2.png", "s3.png", "s4.png", "s5.png", "s6.png", "s7.png", "s8.png", "s9.png"
@@ -175,11 +174,6 @@ namespace SoleHub.Data
                 {
                     brand = "Adidas";
                     category = "Slides";
-                }
-                else if (fileName.StartsWith("c") || fileName.StartsWith("cr"))
-                {
-                    brand = "Converse";
-                    category = "Lifestyle";
                 }
                 else if (fileName.StartsWith("r"))
                 {

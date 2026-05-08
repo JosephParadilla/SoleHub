@@ -4,87 +4,188 @@
     ViewData["Title"] = "My Profile";
 }
 
-<section class="container py-5">
-    <div class="page-heading">
-        <h1>My Profile</h1>
-        <p>Manage your SoleHub account details and upload your profile picture.</p>
-    </div>
+<style>
+    body {
+        background-color: #050505;
+        color: white;
+    }
 
+    /* Glassmorphism Header */
+    .profile-hero {
+        background: radial-gradient(circle at top left, #1a1a1a, #050505);
+        padding: 80px 0 50px;
+        margin-bottom: 40px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    /* Matte Black Cards */
+    .profile-card-matte {
+        background: #111;
+        border-radius: 32px;
+        border: 1px solid rgba(255,255,255,0.03);
+        padding: 40px;
+        height: 100%;
+        transition: transform 0.3s ease;
+    }
+
+    /* Avatar Design */
+    .avatar-wrapper {
+        position: relative;
+        width: 150px;
+        height: 150px;
+        margin: 0 auto 25px;
+    }
+
+    .avatar-box {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 4px solid #1a1a1a;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        background: #1a1a1a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .avatar-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    .avatar-placeholder i {
+        font-size: 4rem;
+        color: rgba(255,255,255,0.1);
+    }
+
+    /* Custom Form Controls */
+    .form-control-dark {
+        background: #1a1a1a !important;
+        border: 1px solid rgba(255,255,255,0.08) !important;
+        color: white !important;
+        border-radius: 12px;
+        padding: 12px 15px;
+    }
+
+        .form-control-dark:focus {
+            border-color: rgba(255,255,255,0.2) !important;
+            box-shadow: 0 0 0 0.25rem rgba(255,255,255,0.05) !important;
+        }
+
+    .form-label {
+        color: rgba(255,255,255,0.5);
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* Premium Buttons */
+    .btn-save {
+        background: #fff;
+        color: #000;
+        font-weight: 700;
+        border-radius: 12px;
+        padding: 12px 30px;
+        transition: 0.3s;
+    }
+
+        .btn-save:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+    .btn-history {
+        background: rgba(255,255,255,0.05);
+        color: #fff;
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 12px;
+        padding: 12px 25px;
+    }
+</style>
+
+<div class="profile-hero">
+    <div class="container">
+        <h1 class="fw-black mb-1">My Profile</h1>
+        <p class="text-secondary opacity-75">Manage your SoleHub account details and identity.</p>
+    </div>
+</div>
+
+<section class="container pb-5">
     @if (TempData["Success"] != null)
     {
-        <div class="alert alert-success rounded-4">
-            @TempData["Success"]
+        <div class="alert alert-success bg-success border-0 text-white rounded-4 mb-4 p-3">
+            <i class="bi bi-check-circle-fill me-2"></i> @TempData["Success"]
         </div>
     }
 
-    @if (TempData["Error"] != null)
-    {
-        <div class="alert alert-danger rounded-4">
-            @TempData["Error"]
-        </div>
-    }
-
-    <div class="row g-4">
+    <div class="row g-5">
         <div class="col-lg-4">
-            <div class="profile-card text-center">
-                <div class="avatar-box">
-                    @if (!string.IsNullOrEmpty(Model.ProfilePictureUrl))
-                    {
-                        <img src="@Model.ProfilePictureUrl" alt="Profile Picture" />
-                    }
-                    else
-                    {
-                        <div class="avatar-placeholder">
-                            <i class="bi bi-person"></i>
-                        </div>
-                    }
+            <div class="profile-card-matte text-center shadow-lg">
+                <div class="avatar-wrapper">
+                    <div class="avatar-box">
+                        @if (!string.IsNullOrEmpty(Model.ProfilePictureUrl))
+                        {
+                            <img src="@Model.ProfilePictureUrl" alt="Profile Picture" />
+                        }
+                        else
+                        {
+                            <div class="avatar-placeholder">
+                                <i class="bi bi-person-fill"></i>
+                            </div>
+                        }
+                    </div>
                 </div>
 
-                <h3>@Model.FullName</h3>
-                <p>@Model.Email</p>
+                <h3 class="fw-bold mb-1">@Model.FullName</h3>
+                <p class="text-secondary mb-4">@Model.Email</p>
 
-                <form asp-controller="Account"
-                      asp-action="UploadAvatar"
-                      method="post"
-                      enctype="multipart/form-data">
-                    <input type="file" name="photo" class="form-control mb-3" required />
-
-                    <button type="submit" class="btn btn-dark w-100">
-                        Upload Profile Picture
-                    </button>
+                <form asp-controller="Account" asp-action="UploadAvatar" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <input type="file" name="photo" id="photoInput" class="d-none" onchange="this.form.submit()" />
+                        <label for="photoInput" class="btn btn-outline-light w-100 rounded-pill py-2">
+                            <i class="bi bi-camera me-2"></i> Change Photo
+                        </label>
+                    </div>
+                    <p class="small text-secondary opacity-50">JPG, PNG or GIF. Max 5MB.</p>
                 </form>
             </div>
         </div>
 
         <div class="col-lg-8">
-            <div class="profile-card">
-                <h4>Account Management</h4>
+            <div class="profile-card-matte shadow-lg">
+                <h4 class="fw-bold mb-4">Account Settings</h4>
 
                 <form asp-controller="Account" asp-action="UpdateProfile" method="post">
                     <input type="hidden" asp-for="ProfilePictureUrl" />
 
-                    <div class="mb-3">
-                        <label class="form-label">Full Name</label>
-                        <input asp-for="FullName" class="form-control" required />
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label">Full Name</label>
+                            <input asp-for="FullName" class="form-control form-control-dark" placeholder="Enter your name" required />
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+                            <label class="form-label">Email Address</label>
+                            <input asp-for="Email" type="email" class="form-control form-control-dark" placeholder="email@example.com" required />
+                        </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Email Address</label>
-                        <input asp-for="Email" type="email" class="form-control" required />
-                    </div>
-
-                    <div class="mb-4">
+                    <div class="mb-5">
                         <label class="form-label">Default Shipping Address</label>
-                        <textarea asp-for="Address" class="form-control" rows="3" required></textarea>
+                        <textarea asp-for="Address" class="form-control form-control-dark" rows="4" placeholder="Street, City, Zip Code" required></textarea>
                     </div>
 
-                    <button type="submit" class="btn btn-dark">
-                        Save Changes
-                    </button>
-
-                    <a asp-controller="Cart" asp-action="OrderHistory" class="btn btn-outline-dark ms-2">
-                        View Order History
-                    </a>
+                    <div class="d-flex align-items-center">
+                        <button type="submit" class="btn btn-save me-3">
+                            Save Changes
+                        </button>
+                        <a asp-controller="Cart" asp-action="OrderHistory" class="btn btn-history">
+                            <i class="bi bi-clock-history me-2"></i> Order History
+                        </a>
+                    </div>
                 </form>
             </div>
         </div>
