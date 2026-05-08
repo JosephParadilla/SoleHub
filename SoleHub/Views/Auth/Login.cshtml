@@ -1,65 +1,126 @@
 ﻿@model SoleHub.Models.LoginViewModel
-
 @{
-    ViewData["Title"] = "Login";
-    ViewData["HideTopBar"] = true;
+    ViewData["Title"] = "Sign In";
 }
 
-<section class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-5">
-            <div class="profile-card">
-                <h1 class="fw-bold mb-2">SoleHub Login</h1>
-                <p class="text-muted mb-4">Login to continue shopping.</p>
+<div class="container py-5">
+    <div class="row justify-content-center align-items-center" style="min-height: 70vh;">
+        <div class="col-12 col-sm-10 col-md-8 col-lg-5 col-xl-4">
 
-                @if (ViewBag.Error != null)
-                {
-                    <div class="alert alert-danger rounded-4">
-                        @ViewBag.Error
-                    </div>
-                }
+            <div class="text-center mb-5">
+                <h1 class="fw-black display-5 mb-2">LOGIN</h1>
+                <p class="text-muted text-uppercase small tracking-widest">Access your SoleHub account</p>
+            </div>
 
-                @if (TempData["Success"] != null)
-                {
-                    <div class="alert alert-success rounded-4">
-                        @TempData["Success"]
-                    </div>
-                }
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert alert-dark bg-black text-white border-0 rounded-0 small mb-4 py-3">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i> @ViewBag.Error
+                </div>
+            }
 
-                <form asp-controller="Auth" asp-action="Login" method="post">
-                    <div class="mb-3">
-                        <label class="form-label">Username</label>
-                        <input asp-for="Username" class="form-control" placeholder="Enter username" />
-                        <span asp-validation-for="Username" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="form-label">Password</label>
-                        <input asp-for="Password" type="password" class="form-control" placeholder="Enter password" />
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
-
-                    <button type="submit" class="btn btn-dark w-100">
-                        Login
-                    </button>
-                </form>
-
-                <hr />
-
-                <div class="text-center">
-                    <p class="mb-2">Don't have an account?</p>
-                    <a asp-controller="Auth" asp-action="Register" class="btn btn-outline-dark w-100">
-                        Register
-                    </a>
+            <form asp-controller="Auth" asp-action="Login" method="post">
+                <div class="mb-4">
+                    <label class="form-label text-uppercase x-small fw-bold text-muted mb-1">Username</label>
+                    <input asp-for="Username" class="form-control custom-input" placeholder="Enter your username" autocomplete="off" />
+                    <span asp-validation-for="Username" class="text-danger small"></span>
                 </div>
 
-                <hr />
+                <div class="mb-4">
+                    <label class="form-label text-uppercase x-small fw-bold text-muted mb-1">Password</label>
+                    <div class="input-group border-bottom border-2">
+                        <input asp-for="Password" type="password" id="passInput"
+                               class="form-control custom-input border-0" placeholder="••••••••" />
+                        <button class="btn border-0 bg-transparent text-muted" type="button" id="btnToggle">
+                            <i class="bi bi-eye" id="eyeIcon"></i>
+                        </button>
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger small"></span>
+                </div>
 
+                <button type="submit" class="btn btn-black w-100 py-3 rounded-0 fw-bold text-uppercase tracking-widest mt-3 transition-up">
+                    Sign In
+                </button>
+            </form>
+
+            <div class="text-center mt-5">
+                <p class="text-muted small mb-2">Don't have an account yet?</p>
+                <a asp-controller="Auth" asp-action="Register" class="text-black fw-bold text-decoration-none text-uppercase border-bottom border-2 border-dark pb-1">
+                    Join the Club
+                </a>
             </div>
+
         </div>
     </div>
-</section>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // Password Visibility Toggle
+        const btnToggle = document.querySelector('#btnToggle');
+        const passInput = document.querySelector('#passInput');
+        const eyeIcon = document.querySelector('#eyeIcon');
+
+        btnToggle.addEventListener('click', () => {
+            const isPassword = passInput.getAttribute('type') === 'password';
+            passInput.setAttribute('type', isPassword ? 'text' : 'password');
+            eyeIcon.classList.toggle('bi-eye');
+            eyeIcon.classList.toggle('bi-eye-slash');
+        });
+    </script>
+
+    <style>
+        /* Modern Typography & Spacing */
+        .fw-black {
+            font-weight: 900;
+            letter-spacing: -2px;
+        }
+
+        .x-small {
+            font-size: 0.7rem;
+        }
+
+        .tracking-widest {
+            letter-spacing: 0.2em;
+        }
+
+        .uppercase {
+            text-transform: uppercase;
+        }
+
+        /* Custom Bottom-Line Input */
+        .custom-input {
+            border: none;
+            border-bottom: 2px solid #e0e0e0;
+            border-radius: 0;
+            padding: 12px 0;
+            background: transparent;
+            font-size: 0.95rem;
+        }
+
+            .custom-input:focus {
+                box-shadow: none;
+                border-bottom-color: #000;
+                background: transparent;
+            }
+
+        /* Black Button Style */
+        .btn-black {
+            background-color: #000;
+            color: #fff;
+            border: 1px solid #000;
+            transition: all 0.3s ease;
+        }
+
+            .btn-black:hover {
+                background-color: #fff;
+                color: #000;
+            }
+
+        .transition-up:active {
+            transform: scale(0.98);
+        }
+    </style>
 }
