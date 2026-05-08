@@ -13,6 +13,16 @@
     string fullName = Context.Session.GetString("FullName") ?? "";
     bool isLoggedIn = !string.IsNullOrEmpty(username);
 }
+<style>
+    .site-footer {
+        width: 100%;
+        padding: 20px 0;
+        text-align: center; /* Simplest way to center text horizontally */
+        background-color: transparent; /* Or #ffffff to match your design */
+        color: #6c757d; /* Muted color to match your Login page footer */
+        font-size: 0.85rem;
+    }
+</style>
 
 <!DOCTYPE html>
 <html lang="en">
