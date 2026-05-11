@@ -40,7 +40,7 @@
             box-shadow: 0 10px 20px rgba(255, 77, 77, 0.2);
         }
 
-    /* The Matte Black Card */
+    /* Matte Black Card */
     .card-matte-black {
         background: #111;
         border-radius: 32px;
@@ -72,7 +72,7 @@
         max-height: 180px;
         width: auto;
         object-fit: contain;
-        mix-blend-mode: lighten; /* Blends white image BGs into the dark card */
+        mix-blend-mode: lighten;
         filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
         transition: 0.5s ease;
     }
@@ -185,10 +185,14 @@
 
                             <div class="d-flex justify-content-between align-items-center mt-auto">
                                 <span class="fs-5 text-white fw-black">₱@item.Product?.Price.ToString("N2")</span>
-                                <a asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@item.ProductId"
-                                   class="btn btn-white btn-sm rounded-pill px-3 py-2 fw-bold shadow-sm">
-                                    <i class="bi bi-cart-plus me-1"></i> Add to Cart
-                                </a>
+
+                                <!-- POST form for Add to Cart -->
+                                <form asp-controller="Cart" asp-action="AddToCart" method="post">
+                                    <input type="hidden" name="productId" value="@item.ProductId" />
+                                    <button type="submit" class="btn btn-white btn-sm rounded-pill px-3 py-2 fw-bold shadow-sm">
+                                        <i class="bi bi-cart-plus me-1"></i> Add to Cart
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
