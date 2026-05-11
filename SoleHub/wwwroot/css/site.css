@@ -236,6 +236,8 @@ body {
     transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
     border: 1px solid rgba(255, 255, 255, 0.05);
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    display: flex; /* add this */
+    flex-direction: column; /* add this */
 }
 
     .card-matte-black:hover::before {
@@ -324,6 +326,9 @@ body {
 
 .product-info {
     padding: 18px;
+    display: flex; /* add this */
+    flex-direction: column; /* add this */
+    flex: 1; /* add this */
 }
 
 .product-brand {
@@ -364,6 +369,8 @@ body {
     justify-content: space-between;
     align-items: center;
     gap: 14px;
+    margin-top: auto; /* add this — pushes it to the bottom */
+    padding-top: 8px;
 }
 
 .product-price {

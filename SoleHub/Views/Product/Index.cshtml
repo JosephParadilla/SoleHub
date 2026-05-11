@@ -4,8 +4,6 @@
     ViewData["Title"] = "Sneakers";
 }
 
-@Html.AntiForgeryToken()
-
 <style>
     body {
         background-color: #050505;
@@ -68,7 +66,64 @@
         backdrop-filter: blur(10px);
         border-radius: 12px;
     }
+
+    /* Card alignment fix */
+    .card-matte-black {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-info {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    .product-bottom {
+        margin-top: auto;
+    }
+
+    /* Brand pills */
+    .brand-pill {
+        font-size: 0.78rem !important;
+        padding: 6px 14px !important;
+        color: rgba(255, 255, 255, 0.6) !important;
+        background: rgba(255, 255, 255, 0.04) !important;
+        border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+        .brand-pill:hover {
+            background: rgba(255, 255, 255, 0.12) !important;
+            color: #fff !important;
+            border-color: rgba(255, 255, 255, 0.3) !important;
+        }
+
+    .pills-label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.25);
+        margin-bottom: 8px;
+    }
+
+    /* Active states */
+    .category-pill.active {
+        background: #111 !important;
+        color: #ffffff !important;
+        border-color: #ffffff !important;
+    }
+
+    .brand-pill.active {
+        background: #111 !important;
+        color: #ffffff !important;
+        border-color: #ffffff !important;
+    }
 </style>
+
+<form id="__AjaxAntiForgeryForm" method="post" style="display:none;">
+    @Html.AntiForgeryToken()
+</form>
 
 <section class="hero-section">
     <div class="hero-content">
@@ -77,16 +132,12 @@
         <p class="hero-description">
             Premium sneakers, running shoes, and slides for every step of your journey.
         </p>
-
         <a asp-controller="Product" asp-action="Index" class="btn btn-light hero-button px-5 py-3 fw-bold rounded-pill">
             Shop Now
             <i class="bi bi-arrow-right ms-2"></i>
         </a>
     </div>
-
-    <div class="hero-shoe-text">
-        SOLEHUB
-    </div>
+    <div class="hero-shoe-text">SOLEHUB</div>
 </section>
 
 <section class="container-fluid px-4 mt-5">
@@ -97,7 +148,8 @@
 
         <form asp-controller="Product" asp-action="Index" method="get" class="search-form" style="min-width: 320px;">
             <i class="bi bi-search text-white-50"></i>
-            <input type="text" name="searchString" value="@ViewData["CurrentFilter"]"
+            <input type="text" name="searchString"
+                   value="@(ViewData["CurrentFilter"]?.ToString() ?? "")"
                    class="form-control search-input" placeholder="Search sneakers..." />
             <button type="submit" class="btn btn-light rounded-pill px-4 fw-bold">Search</button>
         </form>
@@ -110,12 +162,69 @@
         </div>
     }
 
+    @* Category pills *@
+    <p class="pills-label">Category</p>
+    <div class="category-pills mb-3">
+        <a asp-controller="Product" asp-action="Index"
+           asp-route-brand="@ViewData["CurrentBrand"]?.ToString()"
+           class="category-pill @(ViewData["CurrentCategory"] == null ? "active" : "")">All</a>
+        <a asp-controller="Product" asp-action="Index"
+           asp-route-category="Running"
+           asp-route-brand="@ViewData["CurrentBrand"]?.ToString()"
+           class="category-pill @(ViewData["CurrentCategory"]?.ToString() == "Running" ? "active" : "")">Running</a>
+        <a asp-controller="Product" asp-action="Index"
+           asp-route-category="Basketball"
+           asp-route-brand="@ViewData["CurrentBrand"]?.ToString()"
+           class="category-pill @(ViewData["CurrentCategory"]?.ToString() == "Basketball" ? "active" : "")">Basketball</a>
+        <a asp-controller="Product" asp-action="Index"
+           asp-route-category="Slides"
+           asp-route-brand="@ViewData["CurrentBrand"]?.ToString()"
+           class="category-pill @(ViewData["CurrentCategory"]?.ToString() == "Slides" ? "active" : "")">Slides</a>
+        <a asp-controller="Product" asp-action="Index"
+           asp-route-category="Lifestyle"
+           asp-route-brand="@ViewData["CurrentBrand"]?.ToString()"
+           class="category-pill @(ViewData["CurrentCategory"]?.ToString() == "Lifestyle" ? "active" : "")">Lifestyle</a>
+        <a asp-controller="Product" asp-action="Index"
+           asp-route-category="Skate"
+           asp-route-brand="@ViewData["CurrentBrand"]?.ToString()"
+           class="category-pill @(ViewData["CurrentCategory"]?.ToString() == "Skate" ? "active" : "")">Skate</a>
+    </div>
+
+    @* Brand pills *@
+    <p class="pills-label">Brand</p>
     <div class="category-pills mb-5">
-        <a asp-controller="Product" asp-action="Index" class="category-pill">All</a>
-        <a asp-controller="Product" asp-action="Index" asp-route-category="Running" class="category-pill">Running</a>
-        <a asp-controller="Product" asp-action="Index" asp-route-category="Slides" class="category-pill">Slides</a>
-        <a asp-controller="Product" asp-action="Index" asp-route-category="Lifestyle" class="category-pill">Lifestyle</a>
-        <a asp-controller="Product" asp-action="Index" asp-route-category="Skate" class="category-pill">Skate</a>
+        <a asp-controller="Product" asp-action="Index"
+           asp-route-category="@ViewData["CurrentCategory"]?.ToString()"
+           asp-route-brand="Nike"
+           class="category-pill brand-pill @(ViewData["CurrentBrand"]?.ToString() == "Nike" ? "active" : "")">Nike</a>
+        <a asp-controller="Product" asp-action="Index"
+           asp-route-category="@ViewData["CurrentCategory"]?.ToString()"
+           asp-route-brand="Hoka"
+           class="category-pill brand-pill @(ViewData["CurrentBrand"]?.ToString() == "Hoka" ? "active" : "")">Hoka</a>
+        <a asp-controller="Product" asp-action="Index"
+           asp-route-category="@ViewData["CurrentCategory"]?.ToString()"
+           asp-route-brand="Adidas"
+           class="category-pill brand-pill @(ViewData["CurrentBrand"]?.ToString() == "Adidas" ? "active" : "")">Adidas</a>
+        <a asp-controller="Product" asp-action="Index"
+           asp-route-category="@ViewData["CurrentCategory"]?.ToString()"
+           asp-route-brand="Converse"
+           class="category-pill brand-pill @(ViewData["CurrentBrand"]?.ToString() == "Converse" ? "active" : "")">Converse</a>
+        <a asp-controller="Product" asp-action="Index"
+           asp-route-category="@ViewData["CurrentCategory"]?.ToString()"
+           asp-route-brand="Crocs"
+           class="category-pill brand-pill @(ViewData["CurrentBrand"]?.ToString() == "Crocs" ? "active" : "")">Crocs</a>
+        <a asp-controller="Product" asp-action="Index"
+           asp-route-category="@ViewData["CurrentCategory"]?.ToString()"
+           asp-route-brand="New Balance"
+           class="category-pill brand-pill @(ViewData["CurrentBrand"]?.ToString() == "New Balance" ? "active" : "")">New Balance</a>
+        <a asp-controller="Product" asp-action="Index"
+           asp-route-category="@ViewData["CurrentCategory"]?.ToString()"
+           asp-route-brand="Puma"
+           class="category-pill brand-pill @(ViewData["CurrentBrand"]?.ToString() == "Puma" ? "active" : "")">Puma</a>
+        <a asp-controller="Product" asp-action="Index"
+           asp-route-category="@ViewData["CurrentCategory"]?.ToString()"
+           asp-route-brand="On Cloud"
+           class="category-pill brand-pill @(ViewData["CurrentBrand"]?.ToString() == "On Cloud" ? "active" : "")">On Cloud</a>
     </div>
 
     <div class="row g-4">
@@ -127,7 +236,6 @@
                         <button class="wishlist-btn-matte" data-product-id="@item.Id">
                             <i class="bi bi-heart"></i>
                         </button>
-
                         <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id">
                             <img src="@item.ImageUrl" alt="@item.Name" class="product-image-floating" />
                         </a>
@@ -200,7 +308,14 @@
                 <i class="bi bi-arrow-right-circle h3 mb-0"></i>
             </a>
         </div>
-
+        <div class="col-md-3 col-sm-6">
+            <a asp-controller="Product" asp-action="Index" asp-route-category="Basketball"
+               class="category-card category-Basketball">
+                <span>Basketball</span>
+                <small>Gear Up shoes for Ballin.</small>
+                <i class="bi bi-arrow-right-circle h3 mb-0"></i>
+            </a>
+        </div>
         <div class="col-md-3 col-sm-6">
             <a asp-controller="Product" asp-action="Index" asp-route-category="Slides"
                class="category-card category-slides">
@@ -209,7 +324,6 @@
                 <i class="bi bi-arrow-right-circle h3 mb-0"></i>
             </a>
         </div>
-
         <div class="col-md-3 col-sm-6">
             <a asp-controller="Product" asp-action="Index" asp-route-category="Lifestyle"
                class="category-card category-lifestyle">
@@ -218,7 +332,6 @@
                 <i class="bi bi-arrow-right-circle h3 mb-0"></i>
             </a>
         </div>
-
         <div class="col-md-3 col-sm-6">
             <a asp-controller="Product" asp-action="Index" asp-route-category="Skate"
                class="category-card category-skate">
@@ -252,11 +365,13 @@
                 const icon = this.querySelector('i');
 
                 try {
+                    const token = document.querySelector('#__AjaxAntiForgeryForm input[name="__RequestVerificationToken"]')?.value ?? '';
+
                     const response = await fetch('/Wishlist/Toggle?id=' + productId, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value ?? ''
+                            'RequestVerificationToken': token
                         }
                     });
 

@@ -15,27 +15,33 @@ namespace SoleHub.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string? searchString, string? category)
+        public async Task<IActionResult> Index(string? searchString, string? category, string? brand)
         {
             ViewData["CurrentFilter"] = searchString;
             ViewData["CurrentCategory"] = category;
+            ViewData["CurrentBrand"] = brand;
 
             var products = _context.Products.AsNoTracking().AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(searchString))
             {
                 string search = searchString.ToLower();
-                products = products.Where(product =>
-                    product.Name.ToLower().Contains(search) ||
-                    product.Brand.ToLower().Contains(search) ||
-                    product.Category.ToLower().Contains(search));
+                products = products.Where(p =>
+                    p.Name.ToLower().Contains(search) ||
+                    p.Brand.ToLower().Contains(search) ||
+                    p.Category.ToLower().Contains(search));
             }
 
             if (!string.IsNullOrWhiteSpace(category))
             {
-                string selectedCategory = category.ToLower();
-                products = products.Where(product =>
-                    product.Category.ToLower() == selectedCategory);
+                products = products.Where(p =>
+                    p.Category.ToLower() == category.ToLower());
+            }
+
+            if (!string.IsNullOrWhiteSpace(brand))
+            {
+                products = products.Where(p =>
+                    p.Brand.ToLower() == brand.ToLower());
             }
 
             return View(await products.ToListAsync());
@@ -108,7 +114,6 @@ namespace SoleHub.Controllers
                     Quantity = 1,
                     Size = size
                 };
-
                 _context.CartItems.Add(cartItem);
             }
             else
@@ -119,7 +124,6 @@ namespace SoleHub.Controllers
             await _context.SaveChangesAsync();
 
             TempData["Message"] = $"{product.Name} Size {size} added to cart.";
-
             return RedirectToAction("Index", "Cart");
         }
     }
