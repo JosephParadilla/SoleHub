@@ -1,154 +1,254 @@
-﻿@model SoleHub.Models.ProductDetailsViewModel
-
-@{
+﻿@{
     ViewData["Title"] = Model.Product.Name;
 }
 
-<section class="container-fluid px-4 py-5">
-    <div class="product-detail-layout">
-        <div class="product-gallery">
-            <div class="gallery-main">
-                <img src="@Model.Product.ImageUrl" alt="@Model.Product.Name" asp-append-version="true" />
-            </div>
+<style>
+    body {
+        background-color: #050505;
+        color: white;
+    }
 
-            <div class="gallery-main">
-                <img src="@Model.Product.ImageUrl" alt="@Model.Product.Name" asp-append-version="true" />
-            </div>
+    .product-hero {
+        background: radial-gradient(circle at top left, #1a1a1a, #050505);
+        padding: 60px 0 40px;
+        margin-bottom: 40px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
 
-            <div class="gallery-main">
-                <img src="@Model.Product.ImageUrl" alt="@Model.Product.Name" asp-append-version="true" />
-            </div>
+    .product-card-matte {
+        background: #111;
+        border-radius: 28px;
+        border: 1px solid rgba(255,255,255,0.05);
+        overflow: hidden;
+        height: 100%;
+    }
 
-            <div class="gallery-main">
-                <img src="@Model.Product.ImageUrl" alt="@Model.Product.Name" asp-append-version="true" />
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3px;
+    }
+
+    .gallery-cell {
+        background: #1a1a1a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 28px;
+        aspect-ratio: 1;
+        transition: background 0.25s ease;
+        cursor: pointer;
+    }
+
+        .gallery-cell:hover {
+            background: #222;
+        }
+
+        .gallery-cell img {
+            width: 100%;
+            max-width: 220px;
+            object-fit: contain;
+            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.7));
+            transition: transform 0.35s ease;
+        }
+
+        .gallery-cell:hover img {
+            transform: scale(1.06) rotate(-2deg);
+        }
+
+    /* Detail panel */
+    .detail-panel {
+        background: #111;
+        border-radius: 28px;
+        border: 1px solid rgba(255,255,255,0.05);
+        padding: 40px;
+        position: sticky;
+        top: 100px;
+        height: fit-content;
+    }
+
+    .detail-eyebrow {
+        color: rgba(255,255,255,0.4);
+        text-transform: uppercase;
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        margin-bottom: 10px;
+    }
+
+    .detail-panel h1 {
+        font-size: 2rem;
+        font-weight: 900;
+        line-height: 1.1;
+        letter-spacing: -0.5px;
+        margin-bottom: 12px;
+    }
+
+    .detail-price {
+        font-size: 1.6rem;
+        font-weight: 900;
+        color: #fff;
+        margin-bottom: 28px;
+    }
+
+    /* Size Grid */
+    .size-label {
+        color: rgba(255,255,255,0.45);
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 14px;
+    }
+
+    .size-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-bottom: 28px;
+    }
+
+    .size-option input {
+        display: none;
+    }
+
+    .size-option span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 50px;
+        background: #1a1a1a;
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 12px;
+        font-weight: 800;
+        font-size: 0.9rem;
+        color: rgba(255,255,255,0.7);
+        cursor: pointer;
+        transition: 0.2s ease;
+    }
+
+        .size-option span:hover {
+            border-color: rgba(255,255,255,0.3);
+            color: #fff;
+        }
+
+    .size-option input:checked + span {
+        background: #fff;
+        color: #000;
+        border-color: #fff;
+    }
+
+    /* Buttons */
+    .btn-add-cart {
+        background: #fff;
+        color: #000;
+        font-weight: 800;
+        border-radius: 14px;
+        padding: 16px;
+        width: 100%;
+        border: none;
+        font-size: 0.95rem;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        transition: 0.25s ease;
+        cursor: pointer;
+    }
+
+        .btn-add-cart:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(255,255,255,0.1);
+        }
+
+    /* Delivery info */
+    .delivery-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255,255,255,0.06);
+        color: rgba(255,255,255,0.45);
+        font-size: 0.9rem;
+    }
+
+        .delivery-row i {
+            font-size: 1.1rem;
+        }
+</style>
+
+<!-- Hero Header -->
+<div class="product-hero">
+    <div class="container">
+        <p class="detail-eyebrow mb-2">@Model.Product.Category</p>
+        <h1 class="fw-black mb-1" style="font-size: 2.4rem; letter-spacing: -1px;">@Model.Product.Name</h1>
+        <p class="text-secondary opacity-75">Product Details &amp; Size Selection</p>
+    </div>
+</div>
+
+<section class="container pb-5">
+    <div class="row g-4 align-items-start">
+
+        <!-- Gallery -->
+        <div class="col-lg-7">
+            <div class="product-card-matte">
+                <div class="gallery-grid">
+                    @for (int i = 0; i < 4; i++)
+                    {
+                        <div class="gallery-cell">
+                            <img src="@Model.Product.ImageUrl" alt="@Model.Product.Name" />
+                        </div>
+                    }
+                </div>
             </div>
         </div>
 
-        <div class="product-detail-panel">
-            <div class="breadcrumb-text">
-                Home / Sneakers / @Model.Product.Category
-            </div>
+        <!-- Detail Panel -->
+        <div class="col-lg-5">
+            <div class="detail-panel">
 
-            <span class="product-badge">NEW</span>
+                <p class="detail-eyebrow">@Model.Product.Category</p>
+                <h1>@Model.Product.Name</h1>
+                <p class="detail-price">₱@Model.Product.Price.ToString("N2")</p>
 
-            <h1>@Model.Product.Name</h1>
+                <form asp-action="AddToCart" method="post" id="sizeForm">
+                    <input type="hidden" name="id" value="@Model.Product.Id" />
 
-            <p class="detail-brand">@Model.Product.Brand</p>
+                    <p class="size-label">Select Size</p>
+                    <div class="size-grid">
+                        @foreach (var size in Model.AvailableSizes)
+                        {
+                            <label class="size-option">
+                                <input type="radio" name="size" value="@size" />
+                                <span>@size</span>
+                            </label>
+                        }
+                    </div>
 
-            <div class="detail-rating">
-                <span>★★★★★</span>
-                <strong>4.8</strong>
-                <small>(619 Reviews)</small>
-            </div>
+                    <button type="submit" class="btn-add-cart">
+                        ADD TO CART <i class="bi bi-bag-plus ms-2"></i>
+                    </button>
+                </form>
 
-            <h3 class="detail-price">₱@Model.Product.Price.ToString("N2")</h3>
-
-            <p class="detail-color">
-                Category: @Model.Product.Category
-            </p>
-
-            @if (TempData["Message"] != null)
-            {
-                <div class="alert alert-warning rounded-4">
-                    @TempData["Message"]
-                </div>
-            }
-
-            <form asp-controller="Product"
-                  asp-action="AddToCart"
-                  method="post"
-                  id="sizeForm">
-
-                <input type="hidden" name="id" value="@Model.Product.Id" />
-
-                <div class="size-header">
-                    <h4>Select a size</h4>
-                    <a href="#" onclick="return false;">Size chart</a>
-                </div>
-
-                <div id="sizeError" class="alert alert-danger rounded-4 d-none">
-                    Please select a shoe size before adding this item to your cart.
-                </div>
-
-                <div class="size-grid">
-                    @foreach (var size in Model.AvailableSizes)
-                    {
-                        <label class="size-option">
-                            <input type="radio" name="size" value="@size" />
-                            <span>@size</span>
-                        </label>
-                    }
-
-                    @foreach (var size in Model.UnavailableSizes)
-                    {
-                        <label class="size-option unavailable">
-                            <input type="radio" disabled />
-                            <span>@size</span>
-                        </label>
-                    }
-                </div>
-
-                <button type="submit" class="btn btn-dark btn-lg w-100 mt-4">
-                    Add to Cart
-                    <i class="bi bi-cart ms-1"></i>
-                </button>
-            </form>
-
-            <div class="important-message mt-4">
-                <h5>
-                    <i class="bi bi-exclamation-triangle-fill"></i>
-                    Important Message
-                </h5>
-
-                <p>
-                    Available sizes are shown above. Unavailable sizes are disabled.
-                    Please confirm your selected size before adding the item to your cart.
-                </p>
-            </div>
-
-            <div class="detail-delivery mt-4">
-                <div>
+                <div class="delivery-row">
                     <i class="bi bi-truck"></i>
-                    <strong>PH Delivery</strong>
-                    <p>Ships through J&T Express, LBC, Flash Express, or SPX.</p>
+                    <span>Standard PH Delivery — 3 to 5 business days</span>
                 </div>
 
-                <div>
-                    <i class="bi bi-cash-coin"></i>
-                    <strong>Payment Options</strong>
-                    <p>Cash on Delivery, GCash, or card payment available.</p>
-                </div>
             </div>
         </div>
+
     </div>
 </section>
 
 @section Scripts {
     <script>
-        const sizeForm = document.getElementById("sizeForm");
-        const sizeError = document.getElementById("sizeError");
-
-        sizeForm.addEventListener("submit", function (event) {
-            const selectedSize = document.querySelector('input[name="size"]:checked');
-
-            if (!selectedSize) {
-                event.preventDefault();
-
-                sizeError.classList.remove("d-none");
-
-                sizeError.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center"
-                });
+        document.getElementById("sizeForm").addEventListener("submit", function (e) {
+            const selected = document.querySelector('input[name="size"]:checked');
+            if (!selected) {
+                e.preventDefault();
+                alert("Please select a size first!");
             }
-        });
-
-        const sizeRadios = document.querySelectorAll('input[name="size"]');
-
-        sizeRadios.forEach(function (radio) {
-            radio.addEventListener("change", function () {
-                sizeError.classList.add("d-none");
-            });
         });
     </script>
 }

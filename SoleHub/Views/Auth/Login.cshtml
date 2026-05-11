@@ -3,62 +3,211 @@
     ViewData["Title"] = "Sign In";
 }
 
-<div class="container py-5">
-    <div class="row justify-content-center align-items-center" style="min-height: 70vh;">
-        <div class="col-12 col-sm-10 col-md-8 col-lg-5 col-xl-4">
+<div class="login-page-wrapper">
+    <div class="login-glass-container">
+        <div class="text-center mb-5">
+            <h1 class="brand-title">LOGIN</h1>
+            <p class="brand-subtitle">ACCESS YOUR SOLEHUB ACCOUNT</p>
+        </div>
 
-            <div class="text-center mb-5">
-                <h1 class="fw-black display-5 mb-2">LOGIN</h1>
-                <p class="text-muted text-uppercase small tracking-widest">Access your SoleHub account</p>
+        @if (ViewBag.Error != null)
+        {
+            <div class="glass-alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i> @ViewBag.Error
+            </div>
+        }
+
+        <form asp-controller="Auth" asp-action="Login" method="post">
+            <div class="input-glass-group mb-4">
+                <label class="glass-label">Username</label>
+                <input asp-for="Username" class="glass-input" placeholder="Enter your username" autocomplete="off" />
+                <span asp-validation-for="Username" class="text-danger small"></span>
             </div>
 
-            @if (ViewBag.Error != null)
-            {
-                <div class="alert alert-dark bg-black text-white border-0 rounded-0 small mb-4 py-3">
-                    <i class="bi bi-exclamation-triangle-fill me-2"></i> @ViewBag.Error
+            <div class="input-glass-group mb-4">
+                <label class="glass-label">Password</label>
+                <div class="password-wrapper">
+                    <input asp-for="Password" type="password" id="passInput" class="glass-input" placeholder="••••••••" />
+                    <button class="eye-toggle" type="button" id="btnToggle">
+                        <i class="bi bi-eye" id="eyeIcon"></i>
+                    </button>
                 </div>
-            }
-
-            <form asp-controller="Auth" asp-action="Login" method="post">
-                <div class="mb-4">
-                    <label class="form-label text-uppercase x-small fw-bold text-muted mb-1">Username</label>
-                    <input asp-for="Username" class="form-control custom-input" placeholder="Enter your username" autocomplete="off" />
-                    <span asp-validation-for="Username" class="text-danger small"></span>
-                </div>
-
-                <div class="mb-4">
-                    <label class="form-label text-uppercase x-small fw-bold text-muted mb-1">Password</label>
-                    <div class="input-group border-bottom border-2">
-                        <input asp-for="Password" type="password" id="passInput"
-                               class="form-control custom-input border-0" placeholder="••••••••" />
-                        <button class="btn border-0 bg-transparent text-muted" type="button" id="btnToggle">
-                            <i class="bi bi-eye" id="eyeIcon"></i>
-                        </button>
-                    </div>
-                    <span asp-validation-for="Password" class="text-danger small"></span>
-                </div>
-
-                <button type="submit" class="btn btn-black w-100 py-3 rounded-0 fw-bold text-uppercase tracking-widest mt-3 transition-up">
-                    Sign In
-                </button>
-            </form>
-
-            <div class="text-center mt-5">
-                <p class="text-muted small mb-2">Don't have an account yet?</p>
-                <a asp-controller="Auth" asp-action="Register" class="text-black fw-bold text-decoration-none text-uppercase border-bottom border-2 border-dark pb-1">
-                    Join the Club
-                </a>
+                <span asp-validation-for="Password" class="text-danger small"></span>
             </div>
 
+            <button type="submit" class="glass-btn-primary mt-3">
+                SIGN IN
+            </button>
+        </form>
+
+        <div class="text-center mt-5">
+            <p class="account-prompt mb-3">Don't have an account yet?</p>
+
+            <a asp-controller="Auth" asp-action="Register" class="join-link">
+                JOIN THE CLUB
+            </a>
         </div>
     </div>
 </div>
 
+<style>
+    /* 1. Global Page Background Fix */
+    body {
+        background-color: #050505 !important;
+        background-image: radial-gradient(circle at 50% -20%, #1a1a1a 0%, #050505 80%);
+        background-attachment: fixed;
+        color: #ffffff !important;
+        margin: 0;
+    }
+
+    .login-page-wrapper {
+        min-height: 90vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    /* 2. Main Glass Panel */
+    .login-glass-container {
+        width: 100%;
+        max-width: 420px;
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 32px;
+        padding: 50px 40px;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    }
+
+    /* 3. Typography */
+    .brand-title {
+        font-weight: 900;
+        letter-spacing: -2px;
+        font-size: 3rem;
+        margin-bottom: 5px;
+    }
+
+    .brand-subtitle {
+        color: rgba(255,255,255,0.5);
+        font-size: 0.75rem;
+        letter-spacing: 3px;
+        font-weight: 600;
+    }
+
+    /* 4. Glass Input Styling */
+    .input-glass-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .glass-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        font-weight: 700;
+        color: rgba(255,255,255,0.4);
+        margin-bottom: 8px;
+        letter-spacing: 1px;
+    }
+
+    .glass-input {
+        background: rgba(255, 255, 255, 0.02) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 14px 18px;
+        color: #fff !important;
+        transition: 0.3s;
+    }
+
+        .glass-input:focus {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border-color: rgba(255, 255, 255, 0.3);
+            outline: none;
+            box-shadow: 0 0 15px rgba(255,255,255,0.05);
+        }
+
+    .password-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+        .password-wrapper .glass-input {
+            width: 100%;
+        }
+
+    .eye-toggle {
+        position: absolute;
+        right: 15px;
+        background: transparent;
+        border: none;
+        color: rgba(255,255,255,0.4);
+        cursor: pointer;
+    }
+
+    /* 5. Buttons & Links */
+    .glass-btn-primary {
+        width: 100%;
+        background: #ffffff;
+        color: #000000;
+        border: none;
+        padding: 16px;
+        border-radius: 100px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+        .glass-btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255,255,255,0.2);
+        }
+
+    .join-link {
+        color: #fff;
+        text-decoration: none;
+        font-weight: 800;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+        border-bottom: 2px solid #fff;
+        padding-bottom: 4px;
+        transition: 0.3s;
+    }
+
+        .join-link:hover {
+            color: rgba(255,255,255,0.7);
+            border-color: rgba(255,255,255,0.7);
+        }
+
+    .glass-alert {
+        background: rgba(255, 0, 0, 0.1);
+        border: 1px solid rgba(255, 0, 0, 0.2);
+        color: #ff6b6b;
+        padding: 12px;
+        border-radius: 12px;
+        font-size: 0.85rem;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .account-prompt {
+        /* Using rgba ensures it looks like "glass" by letting 50% of the background through */
+        color: rgba(255, 255, 255, 0.5) !important;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+    }
+
+    /* Optional: Subtle glow for the link to make it pop more */
+    .join-link {
+        color: #ffffff;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    }
+</style>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-
     <script>
-        // Password Visibility Toggle
         const btnToggle = document.querySelector('#btnToggle');
         const passInput = document.querySelector('#passInput');
         const eyeIcon = document.querySelector('#eyeIcon');
@@ -70,57 +219,4 @@
             eyeIcon.classList.toggle('bi-eye-slash');
         });
     </script>
-
-    <style>
-        /* Modern Typography & Spacing */
-        .fw-black {
-            font-weight: 900;
-            letter-spacing: -2px;
-        }
-
-        .x-small {
-            font-size: 0.7rem;
-        }
-
-        .tracking-widest {
-            letter-spacing: 0.2em;
-        }
-
-        .uppercase {
-            text-transform: uppercase;
-        }
-
-        /* Custom Bottom-Line Input */
-        .custom-input {
-            border: none;
-            border-bottom: 2px solid #e0e0e0;
-            border-radius: 0;
-            padding: 12px 0;
-            background: transparent;
-            font-size: 0.95rem;
-        }
-
-            .custom-input:focus {
-                box-shadow: none;
-                border-bottom-color: #000;
-                background: transparent;
-            }
-
-        /* Black Button Style */
-        .btn-black {
-            background-color: #000;
-            color: #fff;
-            border: 1px solid #000;
-            transition: all 0.3s ease;
-        }
-
-            .btn-black:hover {
-                background-color: #fff;
-                color: #000;
-            }
-
-        .transition-up:active {
-            transform: scale(0.98);
-        }
-    </style>
 }
