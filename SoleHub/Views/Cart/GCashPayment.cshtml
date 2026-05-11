@@ -1,34 +1,133 @@
 ﻿@{
     ViewData["Title"] = "GCash Payment";
+    ViewData["HideTopBar"] = true;
+    decimal orderTotal = ViewData["OrderTotal"] is decimal t ? t : 0;
+    var request = Context.Request;
+    var successUrl = $"{request.Scheme}://{request.Host}/Cart/CompleteGCashOrder";
 }
 
-<section class="container py-5">
+<style>
+    body {
+        background-color: #050505;
+        color: white;
+    }
 
-    <div class="text-center">
+    .payment-container {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-        <h1>GCash Payment</h1>
+    .payment-card-premium {
+        background: #111;
+        border: 1px solid rgba(255,255,255,0.05);
+        border-radius: 32px;
+        padding: 40px;
+        max-width: 500px;
+        width: 100%;
+        text-align: center;
+        box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+    }
 
-        <p>
-            Scan the QR Code to complete your payment.
-        </p>
+    .gcash-blue-header {
+        background: #007bff;
+        color: white;
+        margin: -40px -40px 30px -40px;
+        padding: 30px;
+        border-radius: 32px 32px 0 0;
+    }
 
-        <img src="/images/gcash-qr.jpg"
-             alt="GCash QR"
-             style="max-width:300px;"
-             class="img-fluid border rounded-4 shadow" />
+    .total-amount {
+        font-size: 2.5rem;
+        font-weight: 900;
+        letter-spacing: -1px;
+    }
 
-        <div class="mt-4">
+    .qr-wrapper {
+        background: white;
+        padding: 25px;
+        border-radius: 24px;
+        display: inline-block;
+        margin: 20px 0;
+        box-shadow: 0 0 30px rgba(0,123,255,0.15);
+    }
 
-            <a asp-controller="Cart"
-               asp-action="CompleteGCashOrder"
-               class="btn btn-success btn-lg">
+    .qr-img {
+        width: 250px;
+        height: 250px;
+        display: block;
+    }
 
-                I Already Paid
+    .qr-footer-text {
+        font-size: 0.75rem;
+        color: #666;
+        margin-top: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
 
-            </a>
+    .btn-already-paid {
+        background: #007bff;
+        color: white;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-radius: 15px;
+        padding: 15px 30px;
+        transition: 0.3s;
+        border: none;
+        width: 100%;
+        margin-top: 20px;
+        display: block;
+        text-decoration: none;
+    }
 
+        .btn-already-paid:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+            color: white;
+        }
+
+    .instruction-text {
+        color: #888;
+        font-size: 0.9rem;
+    }
+</style>
+
+<section class="payment-container container">
+    <div class="payment-card-premium">
+        <div class="gcash-blue-header">
+            <p class="small text-uppercase fw-bold opacity-75 mb-1">Amount to Pay</p>
+            <div class="total-amount">₱@orderTotal.ToString("N2")</div>
         </div>
 
-    </div>
+        <h4 class="fw-black text-uppercase mb-2">Scan to Pay</h4>
+        <p class="text-secondary small mb-4">Scan this dynamic QR using your GCash app.</p>
 
+        <div class="qr-wrapper">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=@(Uri.EscapeDataString(successUrl))&color=007bff"
+                 alt="GCash QR Code"
+                 class="qr-img" />
+            <div class="qr-footer-text">SoleHub Official Merchant</div>
+        </div>
+
+        <div class="instruction-text mb-4">
+            <div class="d-flex justify-content-center gap-3">
+                <div class="small"><i class="bi bi-1-circle"></i> Scan</div>
+                <div class="small"><i class="bi bi-2-circle"></i> Pay</div>
+                <div class="small"><i class="bi bi-3-circle"></i> Done</div>
+            </div>
+        </div>
+
+        <a asp-controller="Cart" asp-action="CompleteGCashOrder" class="btn-already-paid">
+            I Already Paid <i class="bi bi-check-circle-fill ms-2"></i>
+        </a>
+
+        <div class="mt-4">
+            <a asp-controller="Cart" asp-action="Checkout" class="text-secondary small text-decoration-none">
+                <i class="bi bi-arrow-left me-1"></i> Back to Checkout
+            </a>
+        </div>
+    </div>
 </section>
