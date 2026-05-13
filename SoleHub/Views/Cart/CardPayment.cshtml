@@ -1,96 +1,140 @@
 ﻿@{
     ViewData["Title"] = "Card Payment";
+    decimal orderTotal = ViewData["OrderTotal"] is decimal t ? t : 0;
 }
 
-<section class="container py-5">
+<section class="container-fluid py-5 bg-dark min-vh-100 d-flex align-items-center">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-5">
+                <div class="card border-0 rounded-5 overflow-hidden shadow-lg" style="background-color: #1a1a1a;">
 
-    <div class="row justify-content-center">
+                    <!-- Dynamic Amount Header -->
+                    <div class="bg-primary p-4 text-center text-white">
+                        <p class="text-uppercase small fw-bold mb-1" style="letter-spacing: 1px; opacity: 0.8;">Amount to Pay</p>
+                        <h2 class="display-6 fw-bold mb-0">₱@orderTotal.ToString("N2")</h2>
+                    </div>
 
-        <div class="col-lg-6">
-
-            <div class="card shadow rounded-4 border-0">
-
-                <div class="card-body p-4">
-
-                    <h2 class="mb-4">
-                        Debit / Credit Card
-                    </h2>
-
-                    <form asp-controller="Cart"
-                          asp-action="CompleteCardOrder"
-                          method="post">
-
-                        <div class="mb-3">
-
-                            <label class="form-label">
-                                Card Holder Name
-                            </label>
-
-                            <input type="text"
-                                   class="form-control"
-                                   required />
-
+                    <div class="card-body p-4 p-md-5">
+                        <div class="text-center mb-4">
+                            <h4 class="text-white fw-bold">Secure Card Payment</h4>
+                            <p class="text-secondary small">Enter your debit or credit card details below</p>
                         </div>
 
-                        <div class="mb-3">
+                        <form asp-controller="Cart" asp-action="CompleteCardOrder" method="post">
 
-                            <label class="form-label">
-                                Card Number
-                            </label>
-
-                            <input type="text"
-                                   maxlength="16"
-                                   class="form-control"
-                                   placeholder="1234123412341234"
-                                   required />
-
-                        </div>
-
-                        <div class="row">
-
-                            <div class="col-md-6 mb-3">
-
-                                <label class="form-label">
-                                    Expiry Date
-                                </label>
-
+                            <div class="mb-3">
+                                <label class="form-label text-light small fw-semibold">Card Holder Name</label>
                                 <input type="text"
-                                       class="form-control"
-                                       placeholder="MM/YY"
+                                       name="cardHolderName"
+                                       class="form-control form-control-lg bg-dark border-secondary text-white"
+                                       placeholder="e.g. Juan Dela Cruz"
                                        required />
-
                             </div>
 
-                            <div class="col-md-6 mb-3">
-
-                                <label class="form-label">
-                                    CVV
-                                </label>
-
-                                <input type="password"
-                                       maxlength="3"
-                                       class="form-control"
-                                       required />
-
+                            <div class="mb-3">
+                                <label class="form-label text-light small fw-semibold">Card Number</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-dark border-secondary text-secondary">
+                                        <i class="bi bi-credit-card-2-front"></i>
+                                    </span>
+                                    <input type="text"
+                                           name="cardNumber"
+                                           maxlength="16"
+                                           class="form-control form-control-lg bg-dark border-secondary text-white border-start-0"
+                                           placeholder="1234 1234 1234 1234"
+                                           required />
+                                </div>
                             </div>
 
-                        </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label text-light small fw-semibold">Expiry Date</label>
+                                    <input type="text"
+                                           name="cardExpiry"
+                                           class="form-control form-control-lg bg-dark border-secondary text-white"
+                                           placeholder="MM/YY"
+                                           maxlength="5"
+                                           required />
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label text-light small fw-semibold">CVV</label>
+                                    <!-- No name attribute — CVV is never sent to the server -->
+                                    <input type="password"
+                                           maxlength="3"
+                                           class="form-control form-control-lg bg-dark border-secondary text-white"
+                                           placeholder="•••"
+                                           required />
+                                </div>
+                            </div>
 
-                        <button type="submit"
-                                class="btn btn-dark w-100">
+                            <div class="mt-4">
+                                <button type="submit" class="btn btn-primary btn-lg w-100 fw-bold py-3 rounded-pill">
+                                    PAY NOW <i class="bi bi-shield-check ms-2"></i>
+                                </button>
+                            </div>
 
-                            Pay Now
+                            <div class="text-center mt-4">
+                                <a asp-action="Checkout" class="text-secondary text-decoration-none small">
+                                    <i class="bi bi-arrow-left me-1"></i> Back to Checkout
+                                </a>
+                            </div>
 
-                        </button>
+                        </form>
+                    </div>
+                </div>
 
-                    </form>
-
+                <!-- Security badges -->
+                <div class="text-center mt-3">
+                    <span class="text-secondary small me-3">
+                        <i class="bi bi-lock-fill me-1"></i> SSL Encrypted
+                    </span>
+                    <span class="text-secondary small me-3">
+                        <i class="bi bi-shield-fill-check me-1"></i> Secure Payment
+                    </span>
+                    <span class="text-secondary small">
+                        <i class="bi bi-credit-card-fill me-1"></i> Visa / Mastercard
+                    </span>
                 </div>
 
             </div>
-
         </div>
-
     </div>
-
 </section>
+
+<style>
+    .form-control:focus {
+        background-color: #121212 !important;
+        border-color: #0d6efd !important;
+        color: white !important;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+
+    .form-control::placeholder {
+        color: #6c757d !important;
+        opacity: 0.5;
+    }
+
+    /* Auto-format expiry slash feel */
+    input[name="cardExpiry"] {
+        letter-spacing: 2px;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        // Auto-insert slash in expiry field (MM/YY)
+        document.querySelector('input[name="cardExpiry"]').addEventListener('input', function (e) {
+            let val = e.target.value.replace(/\D/g, '');
+            if (val.length >= 3) {
+                val = val.substring(0, 2) + '/' + val.substring(2, 4);
+            }
+            e.target.value = val;
+        });
+
+        // Block non-numeric input on card number
+        document.querySelector('input[name="cardNumber"]').addEventListener('input', function (e) {
+            e.target.value = e.target.value.replace(/\D/g, '');
+        });
+    </script>
+}
