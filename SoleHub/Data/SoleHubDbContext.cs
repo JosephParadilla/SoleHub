@@ -10,6 +10,7 @@ namespace SoleHub.Data
         {
         }
 
+        public DbSet<Payment> Payments { get; set; }
         public DbSet<WishlistItem> WishlistItems { get; set; }
         public DbSet<Product> Products => Set<Product>();
 

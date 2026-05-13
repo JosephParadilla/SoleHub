@@ -15,7 +15,6 @@ namespace SoleHub.Controllers
             _context = context;
         }
 
-        // -------------------------- INDEX --------------------------
         public async Task<IActionResult> Index()
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
@@ -25,41 +24,6 @@ namespace SoleHub.Controllers
             return View(cart);
         }
 
-        // -------------------------- ADD TO CART --------------------------
-        [HttpPost]
-        public async Task<IActionResult> AddToCart(int productId)
-        {
-            int? userId = HttpContext.Session.GetInt32("UserId");
-            if (userId == null) return RedirectToAction("Login", "Auth");
-
-            var product = await _context.Products.FindAsync(productId);
-            if (product == null) return NotFound();
-
-            var existingCartItem = await _context.CartItems
-                .FirstOrDefaultAsync(c => c.UserProfileId == userId.Value && c.ProductId == productId);
-
-            if (existingCartItem != null)
-            {
-                existingCartItem.Quantity += 1;
-            }
-            else
-            {
-                _context.CartItems.Add(new CartItem
-                {
-                    UserProfileId = userId.Value,
-                    ProductId = productId,
-                    Quantity = 1
-                    // Removed DefaultSize reference
-                });
-            }
-
-            await _context.SaveChangesAsync();
-            TempData["Success"] = $"{product.Name} added to cart.";
-
-            return RedirectToAction("Index", "Cart");
-        }
-
-        // -------------------------- REMOVE --------------------------
         public async Task<IActionResult> Remove(int id)
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
@@ -80,7 +44,6 @@ namespace SoleHub.Controllers
             return RedirectToAction("Index");
         }
 
-        // -------------------------- CLEAR --------------------------
         public async Task<IActionResult> Clear()
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
@@ -97,7 +60,6 @@ namespace SoleHub.Controllers
             return RedirectToAction("Index");
         }
 
-        // -------------------------- CHECKOUT --------------------------
         public async Task<IActionResult> Checkout()
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
@@ -134,7 +96,7 @@ namespace SoleHub.Controllers
             decimal shippingFee = subtotal >= 3000 ? 0 : 80;
             decimal total = subtotal + shippingFee;
 
-            // Save details in session
+            // Save all order details in Session — do NOT place order yet
             HttpContext.Session.SetString("FullName", fullName);
             HttpContext.Session.SetString("ContactNumber", contactNumber);
             HttpContext.Session.SetString("Email", email);
@@ -146,9 +108,13 @@ namespace SoleHub.Controllers
             HttpContext.Session.SetString("PaymentMethod", paymentMethod);
             HttpContext.Session.SetString("OrderTotal", total.ToString());
 
-            if (paymentMethod == "GCash") return RedirectToAction("GCashPayment");
-            if (paymentMethod == "Credit/Debit Card") return RedirectToAction("CardPayment");
+            if (paymentMethod == "GCash")
+                return RedirectToAction("GCashPayment");
 
+            if (paymentMethod == "Credit/Debit Card")
+                return RedirectToAction("CardPayment");
+
+            // COD — place order immediately, no payment record needed
             await FinalizeOrder(userId.Value, cart, fullName, contactNumber, email,
                 courier, province, city, barangay, streetAddress, paymentMethod, shippingFee);
 
@@ -156,7 +122,6 @@ namespace SoleHub.Controllers
             return RedirectToAction("OrderHistory");
         }
 
-        // -------------------------- PAYMENT --------------------------
         public IActionResult GCashPayment()
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
@@ -164,6 +129,7 @@ namespace SoleHub.Controllers
 
             string totalStr = HttpContext.Session.GetString("OrderTotal") ?? "0";
             decimal total = decimal.TryParse(totalStr, out var t) ? t : 0;
+
             ViewData["OrderTotal"] = total;
             return View();
         }
@@ -175,35 +141,80 @@ namespace SoleHub.Controllers
 
             string totalStr = HttpContext.Session.GetString("OrderTotal") ?? "0";
             decimal total = decimal.TryParse(totalStr, out var t) ? t : 0;
+
             ViewData["OrderTotal"] = total;
             return View();
         }
 
+        // ── GCash Complete ─────────────────────────────────────────────────────
         public async Task<IActionResult> CompleteGCashOrder()
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
             if (userId == null) return RedirectToAction("Login", "Auth");
 
-            await PlaceOrderFromSession(userId.Value);
+            var (order, cart) = await PlaceOrderFromSession(userId.Value);
+
+            if (order != null)
+            {
+                var payment = new Payment
+                {
+                    OrderId = order.Id,
+                    PaymentMethod = "GCash",
+                    Amount = order.Items.Sum(i => i.Price * i.Quantity) + order.ShippingFee,
+                    Status = "Completed",
+                    CreatedAt = DateTime.Now
+                };
+                _context.Payments.Add(payment);
+                await _context.SaveChangesAsync();
+            }
+
             TempData["Success"] = "GCash payment successful!";
             return RedirectToAction("OrderHistory");
         }
 
+        // ── Card Complete ──────────────────────────────────────────────────────
         [HttpPost]
-        public async Task<IActionResult> CompleteCardOrder()
+        public async Task<IActionResult> CompleteCardOrder(
+            string cardHolderName,
+            string cardNumber,
+            string cardExpiry)
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
             if (userId == null) return RedirectToAction("Login", "Auth");
 
-            await PlaceOrderFromSession(userId.Value);
+            var (order, cart) = await PlaceOrderFromSession(userId.Value);
+
+            if (order != null)
+            {
+                // Only store last 4 digits — never store full card number or CVV
+                string lastFour = cardNumber?.Length >= 4
+                    ? cardNumber[^4..]
+                    : "****";
+
+                var payment = new Payment
+                {
+                    OrderId = order.Id,
+                    PaymentMethod = "Card",
+                    Amount = order.Items.Sum(i => i.Price * i.Quantity) + order.ShippingFee,
+                    Status = "Completed",
+                    CreatedAt = DateTime.Now,
+                    CardHolderName = cardHolderName,
+                    CardLastFour = lastFour,
+                    CardExpiry = cardExpiry
+                };
+                _context.Payments.Add(payment);
+                await _context.SaveChangesAsync();
+            }
+
             TempData["Success"] = "Card payment successful!";
             return RedirectToAction("OrderHistory");
         }
 
-        // -------------------------- HELPER --------------------------
-        private async Task PlaceOrderFromSession(int userId)
+        // ── Shared: build order from session, return it for payment record ─────
+        private async Task<(Order? order, List<CartItem> cart)> PlaceOrderFromSession(int userId)
         {
             var cart = await GetCartItemsAsync(userId);
+
             string fullName = HttpContext.Session.GetString("FullName") ?? "";
             string contactNumber = HttpContext.Session.GetString("ContactNumber") ?? "";
             string email = HttpContext.Session.GetString("Email") ?? "";
@@ -217,11 +228,13 @@ namespace SoleHub.Controllers
             decimal subtotal = cart.Sum(item => item.LineTotal);
             decimal shippingFee = subtotal >= 3000 ? 0 : 80;
 
-            await FinalizeOrder(userId, cart, fullName, contactNumber, email,
+            var order = await FinalizeOrder(userId, cart, fullName, contactNumber, email,
                 courier, province, city, barangay, streetAddress, paymentMethod, shippingFee);
+
+            return (order, cart);
         }
 
-        private async Task FinalizeOrder(
+        private async Task<Order> FinalizeOrder(
             int userId,
             List<CartItem> cart,
             string fullName, string contactNumber, string email,
@@ -259,27 +272,30 @@ namespace SoleHub.Controllers
             _context.CartItems.RemoveRange(cart);
             await _context.SaveChangesAsync();
 
+            // Clear session keys after order is placed
             HttpContext.Session.Remove("OrderTotal");
             HttpContext.Session.Remove("PaymentMethod");
+
+            return order;
         }
 
-        // -------------------------- ORDER HISTORY & UTILITY --------------------------
         public async Task<IActionResult> OrderHistory()
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
             if (userId == null) return RedirectToAction("Login", "Auth");
 
             string role = HttpContext.Session.GetString("Role") ?? "";
+
             var ordersQuery = _context.Orders
-                .Include(o => o.Items)
-                .Include(o => o.UserProfile)
+                .Include(order => order.Items)
+                .Include(order => order.UserProfile)
                 .AsQueryable();
 
             if (role != "Admin")
-                ordersQuery = ordersQuery.Where(o => o.UserProfileId == userId.Value);
+                ordersQuery = ordersQuery.Where(order => order.UserProfileId == userId.Value);
 
             var orders = await ordersQuery
-                .OrderByDescending(o => o.OrderDate)
+                .OrderByDescending(order => order.OrderDate)
                 .ToListAsync();
 
             return View(orders);
@@ -292,13 +308,14 @@ namespace SoleHub.Controllers
             if (userId == null) return RedirectToAction("Login", "Auth");
 
             var cartItem = await _context.CartItems
-                .FirstOrDefaultAsync(c => c.Id == cartItemId && c.UserProfileId == userId.Value);
+                .FirstOrDefaultAsync(c =>
+                    c.Id == cartItemId &&
+                    c.UserProfileId == userId.Value);
 
-            if (cartItem != null)
-            {
-                cartItem.Quantity = Math.Clamp(quantity, 1, 10);
-                await _context.SaveChangesAsync();
-            }
+            if (cartItem == null) return RedirectToAction("Index");
+
+            cartItem.Quantity = Math.Clamp(quantity, 1, 10);
+            await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
         }
@@ -310,24 +327,31 @@ namespace SoleHub.Controllers
             if (userId == null) return RedirectToAction("Login", "Auth");
 
             string role = HttpContext.Session.GetString("Role") ?? "";
+
             var order = await _context.Orders.FirstOrDefaultAsync(o => o.Id == id);
 
-            if (order != null)
+            if (order == null)
             {
-                if (role != "Admin" && order.UserProfileId != userId.Value)
-                {
-                    TempData["Error"] = "Unauthorized action.";
-                    return RedirectToAction("OrderHistory");
-                }
-
-                if (order.Status == "Processing")
-                {
-                    order.Status = "Cancelled";
-                    await _context.SaveChangesAsync();
-                    TempData["Success"] = "Order cancelled successfully.";
-                }
+                TempData["Error"] = "Order not found.";
+                return RedirectToAction("OrderHistory");
             }
 
+            if (role != "Admin" && order.UserProfileId != userId.Value)
+            {
+                TempData["Error"] = "Unauthorized action.";
+                return RedirectToAction("OrderHistory");
+            }
+
+            if (order.Status != "Processing")
+            {
+                TempData["Error"] = "Only processing orders can be cancelled.";
+                return RedirectToAction("OrderHistory");
+            }
+
+            order.Status = "Cancelled";
+            await _context.SaveChangesAsync();
+
+            TempData["Success"] = "Order cancelled successfully.";
             return RedirectToAction("OrderHistory");
         }
 
@@ -338,6 +362,7 @@ namespace SoleHub.Controllers
             if (userId == null) return RedirectToAction("Login", "Auth");
 
             string role = HttpContext.Session.GetString("Role") ?? "";
+
             if (role == "Admin")
             {
                 var allOrders = await _context.Orders.Include(o => o.Items).ToListAsync();
